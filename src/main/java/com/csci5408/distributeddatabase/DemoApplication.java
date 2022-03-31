@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.csci5408.distributeddatabase;
 
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
