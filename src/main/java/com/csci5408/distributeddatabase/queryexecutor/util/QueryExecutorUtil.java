@@ -15,7 +15,7 @@ public class QueryExecutorUtil
 
     public static boolean isTableExistsInDatabase(String databaseName, String tableName)
     {
-        String filePath = databaseName+ File.pathSeparator+tableName+".txt";
+        String filePath = databaseName+ File.separator+tableName+".txt";
         return FileUtil.isFileExists(filePath);
     }
 
@@ -45,5 +45,11 @@ public class QueryExecutorUtil
             currentDBName=System.getProperty(QueryConstants.PROPERTY_CURRENT_DATABASE);
         }
         return currentDBName;
+    }
+
+    public static String getTableFileName(String databaseName, String tableName)
+    {
+        String filePath = databaseName+File.separator+tableName+".txt";
+        return filePath;
     }
 }
