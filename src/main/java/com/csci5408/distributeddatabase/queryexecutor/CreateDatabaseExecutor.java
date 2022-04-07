@@ -7,12 +7,15 @@ import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandle
 
 public class CreateDatabaseExecutor
 {
+    private String databaseName;
+
     private GlobalMetadataHandler globalMetadataHandler;
 
     private LocalMetaDataHandler localMetaDataHandler;
 
-    public CreateDatabaseExecutor()
+    public CreateDatabaseExecutor(String databaseName)
     {
+        this.databaseName=databaseName;
         localMetaDataHandler = new LocalMetaDataHandler();
         globalMetadataHandler = new GlobalMetadataHandler();
     }
