@@ -11,9 +11,9 @@ import java.util.Scanner;
 
 public class TableStructureHelper {
 
-    public static List getTableStructure(String databaseName, String tableName) throws IOException {
+    public static ArrayList getTableStructure(String databaseName, String tableName) throws IOException {
         String line = "";
-        List<HashMap> tableData = new ArrayList<>();
+        ArrayList<HashMap> tableData = new ArrayList<>();
         int counter = 1;
         File file = new File(System.getProperty("user.dir") + "\\" + databaseName + "\\" + tableName + ".txt");
         List<String> columnsNames = new ArrayList<>();
