@@ -1,7 +1,8 @@
 package com.example.demo.transaction;
 
-import com.example.demo.query.Query;
-import junit.framework.TestCase;
+import com.csci5408.distributeddatabase.query.Query;
+import com.csci5408.distributeddatabase.transaction.Transaction;
+import com.csci5408.distributeddatabase.transaction.TransactionManager;
 import org.junit.Test;
 
 import java.util.Queue;

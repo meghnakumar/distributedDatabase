@@ -1,4 +1,4 @@
-package com.example.demo.query;
+package com.csci5408.distributeddatabase.query;
 
 public class CreatDatabaseQuery extends Query {
 

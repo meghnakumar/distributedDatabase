@@ -1,6 +1,6 @@
-package com.example.demo.transaction;
+package com.csci5408.distributeddatabase.transaction;
 
-import com.example.demo.query.Query;
+import com.csci5408.distributeddatabase.query.Query;
 
 import java.util.LinkedList;
 import java.util.Queue;

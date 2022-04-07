@@ -1,6 +1,7 @@
 package com.example.demo.query.parsers;
 
-import com.example.demo.query.Query;
+import com.csci5408.distributeddatabase.query.Query;
+import com.csci5408.distributeddatabase.query.parsers.QueryParser;
 import org.junit.Test;
 
 public class QueryParserTest {

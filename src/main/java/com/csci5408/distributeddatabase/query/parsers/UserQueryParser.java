@@ -1,7 +1,7 @@
-package com.example.demo.query.parsers;
+package com.csci5408.distributeddatabase.query.parsers;
 
-import com.example.demo.query.Query;
-import com.example.demo.query.UseDatabaseQuery;
+import com.csci5408.distributeddatabase.query.Query;
+import com.csci5408.distributeddatabase.query.UseDatabaseQuery;
 
 import java.util.List;
 
