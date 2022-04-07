@@ -42,6 +42,7 @@ public class CreateTableExecutor {
         String path= System.getProperty("user.dir")+"\\";
         File file = new File(path+"\\"+databaseName+"\\"+tableName+".txt");
         if(!QueryExecutorHelper.isTableExistsInDatabase(databaseName,tableName)){
+            localMetaDataHandler.makeMetadataForTable(databaseName,tableName);
             BufferedWriter writeFile = new BufferedWriter(new FileWriter(file));
             Set<String> columnNames = columns.keySet();
             for(String columnName: columnNames){
@@ -57,6 +58,7 @@ public class CreateTableExecutor {
             }
             writeFile.newLine();
             writeFile.close();
+
             return true;
 
         }
