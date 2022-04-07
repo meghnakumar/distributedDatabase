@@ -1,7 +1,7 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
-import com.example.demo.query.CreateTableQuery;
+import com.csci5408.distributeddatabase.query.CreateTableQuery;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

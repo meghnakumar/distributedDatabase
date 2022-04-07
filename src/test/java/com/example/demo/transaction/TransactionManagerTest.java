@@ -9,7 +9,7 @@ import java.util.Queue;
 
 public class TransactionManagerTest {
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void getTransactionFailureTest() throws Exception {
         TransactionManager transactionManager = new TransactionManager();
         Transaction transaction = transactionManager.getTransaction("select * from employee; create table customer(id number, name varchar);");
