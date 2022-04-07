@@ -8,9 +8,10 @@ import java.util.List;
 public class QueryParser {
 
     public Query parse(String sqlQuery) throws Exception {
-            if(!sqlQuery.substring(sqlQuery.length() - 1).equalsIgnoreCase(";")) {
-                throw new Exception("Invalid Query Syntax. Semi-Colon is Missing !");
-            }
+        sqlQuery = sqlQuery.trim();
+        if (!sqlQuery.substring(sqlQuery.length() - 1).equalsIgnoreCase(";")) {
+            throw new Exception("Invalid Query Syntax. Semi-Colon is Missing !");
+        }
 
         List<String> sqlQueryParts = Arrays.asList(sqlQuery.split("\\s+"));
 
@@ -18,7 +19,7 @@ public class QueryParser {
 
         Parser parser;
 
-        switch(queryType) {
+        switch (queryType) {
             case "create":
                 parser = new CreateQueryParser(sqlQuery, sqlQueryParts);
                 break;
