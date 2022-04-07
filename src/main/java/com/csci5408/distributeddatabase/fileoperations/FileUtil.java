@@ -3,6 +3,8 @@ package com.csci5408.distributeddatabase.fileoperations;
 import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,12 +66,11 @@ public class FileUtil
 
     public static void deleteAndCreateFileIfExists(String filePath) throws Exception
     {
-        File file = new File(filePath);
-        if(file.exists())
+        if(new File(filePath).exists())
         {
             System.err.println(filePath+" already exists deleting and creating it again");
-            file.delete();
-            file.createNewFile();
+            Files.deleteIfExists(Paths.get(filePath));
+            Files.createFile(Paths.get(filePath));
         }
     }
 

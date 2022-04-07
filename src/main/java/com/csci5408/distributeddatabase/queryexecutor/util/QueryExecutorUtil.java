@@ -1,10 +1,13 @@
 package com.csci5408.distributeddatabase.queryexecutor.util;
 
 import com.csci5408.distributeddatabase.fileoperations.FileUtil;
+import com.csci5408.distributeddatabase.query.Criteria;
 import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Properties;
+import java.util.Set;
 
 public class QueryExecutorUtil
 {
@@ -51,5 +54,65 @@ public class QueryExecutorUtil
     {
         String filePath = databaseName+File.separator+tableName+".txt";
         return filePath;
+    }
+
+    private static boolean isColumnInteger(String value)
+    {
+        try
+        {
+            Integer.parseInt(value);
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean checkCriteriaForRow(HashMap<String, String> row, Criteria criteria)
+    {
+        try
+        {
+            Set<String> columns = row.keySet();
+            for(String columnName : columns)
+            {
+                String columnValue = row.get(columnName);
+                if(columnName.equals(criteria.getLeftOperand()))
+                {
+                    boolean isColumnInteger = isColumnInteger(columnValue);
+                    if(criteria.getOperator().equals(">"))
+                    {
+                        int comparingValue = Integer.parseInt(criteria.getRightOperand());
+                        int rowValue = Integer.parseInt(columnValue);
+                        return rowValue > comparingValue;
+                    }
+                    else if(criteria.getOperator().equals("<"))
+                    {
+                        int comparingValue = Integer.parseInt(criteria.getRightOperand());
+                        int rowValue = Integer.parseInt(columnValue);
+                        return rowValue < comparingValue;
+                    }
+                    else if(criteria.getOperator().equals("="))
+                    {
+                        if(isColumnInteger)
+                        {
+                            int comparingValue = Integer.parseInt(criteria.getRightOperand());
+                            int rowValue = Integer.parseInt(columnValue);
+                            return rowValue == comparingValue;
+                        }
+                        else
+                        {
+                            return columnValue.equals(criteria.getRightOperand());
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

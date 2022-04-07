@@ -57,6 +57,18 @@ public class QueryExecutorTest
     }
 
     @Test
+    public void selectTableWithCriteriaTest() throws Exception
+    {
+        String sql = "select * from person where name=janvi;";
+        QueryParser parser = new QueryParser();
+
+        SelectQuery selectQuery = (SelectQuery) parser.parse(sql);
+        SelectQueryExecutor selectQueryExecutor = new SelectQueryExecutor(selectQuery);
+        selectQueryExecutor.execute();
+    }
+
+
+    @Test
     public void checkAllQueriesTest() throws Exception
     {
         //create Database
@@ -84,19 +96,26 @@ public class QueryExecutorTest
         createTableExecutor.execute();
 
         //insert table test
-        sql = "insert into persons(name, lastname) values (janvi, patel);";
+        sql = "insert into persons(id, name, lastname) values (1, janvi, patel);";
         parser = new QueryParser();
 
         InsertQuery insertQuery = (InsertQuery) parser.parse(sql);
         InsertTableQueryExecutor insertTableQueryExecutor = new InsertTableQueryExecutor(insertQuery);
         insertTableQueryExecutor.execute();
 
-        sql = "insert into persons(name, lastname) values (shathish, annamalai);";
+        sql = "insert into persons(id, name, lastname) values (2, shathish, annamalai);";
         parser = new QueryParser();
 
         insertQuery = (InsertQuery) parser.parse(sql);
         insertTableQueryExecutor = new InsertTableQueryExecutor(insertQuery);
         insertTableQueryExecutor.execute();
-    }
 
+        //select table test
+        sql = "select id, name from persons where name=janvi;";
+        parser = new QueryParser();
+
+        SelectQuery selectQuery = (SelectQuery) parser.parse(sql);
+        SelectQueryExecutor selectQueryExecutor = new SelectQueryExecutor(selectQuery);
+        selectQueryExecutor.execute();
+    }
 }
