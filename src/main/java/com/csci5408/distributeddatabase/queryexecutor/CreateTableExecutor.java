@@ -2,6 +2,8 @@ package com.csci5408.distributeddatabase.queryexecutor;
 
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
 import com.csci5408.distributeddatabase.query.CreateTableQuery;
+import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -9,7 +11,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
-public class CreateTableExecutor {
+public class CreateTableExecutor implements IQueryExecutor{
 
     private static final String SEPERATOR = "*|*|";
     private String databaseName;
@@ -22,6 +24,8 @@ public class CreateTableExecutor {
         this.createTableQuery = createTableQuery;
         localMetaDataHandler = new LocalMetaDataHandler();
     }
+
+    @Override
     public boolean execute() throws IOException {
         String tableName = createTableQuery.getTableName();
         String primaryKey = createTableQuery.getPrimaryKey();
@@ -38,7 +42,7 @@ public class CreateTableExecutor {
         LinkedHashMap<String,String> columns = createTableQuery.getFieldMap();
         String path= System.getProperty("user.dir")+"\\";
         File file = new File(path+"\\"+databaseName+"\\"+tableName+".txt");
-        if(!QueryExecutorHelper.isTableExistsInDatabase(databaseName,tableName)){
+        if(!QueryExecutorUtil.isTableExistsInDatabase(databaseName,tableName)){
             localMetaDataHandler.makeMetadataForTable(databaseName,tableName);
             localMetaDataHandler.addMetadataForTable(databaseName,tableName,"primaryKey",primaryKey);
             localMetaDataHandler.addMetadataForTable(databaseName,tableName,"foreignKey",foreignKey);

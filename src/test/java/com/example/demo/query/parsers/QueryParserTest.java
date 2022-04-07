@@ -1,5 +1,6 @@
 package com.example.demo.query.parsers;
 
+import com.csci5408.distributeddatabase.query.InsertQuery;
 import com.csci5408.distributeddatabase.query.Query;
 import com.csci5408.distributeddatabase.query.parsers.QueryParser;
 import org.junit.Test;
@@ -47,7 +48,8 @@ public class QueryParserTest {
         String sql = "insert into persons(name, lastname) values (janvi, patel);";
         QueryParser parser = new QueryParser();
         try {
-            Query query = parser.parse(sql);
+            InsertQuery query = (InsertQuery)parser.parse(sql);
+            System.out.println(query.getFieldValueMap());
             System.out.println(query);
         } catch (Exception e) {
             e.printStackTrace();
