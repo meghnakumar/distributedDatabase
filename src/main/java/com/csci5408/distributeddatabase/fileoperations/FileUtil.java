@@ -92,14 +92,14 @@ public class FileUtil
                 if(!isHeaderRowCreated)
                 {
                     line += String.join(QueryConstants.SEPARATOR_ROW_COLUMN, columns);
-                    line += System.lineSeparator();
+                    line += "\n";
                     isHeaderRowCreated=true;
                 }
 
                 //write all the rows to the table
                 for(String key : columns)
                 {
-                    line += String.join(QueryConstants.SEPARATOR_ROW_COLUMN, columns);
+                    line += row.get(key)+QueryConstants.SEPARATOR_ROW_COLUMN;
                 }
                 FileUtil.writeToExistingFile(tablePath, line);
             }
