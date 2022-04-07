@@ -1,10 +1,7 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
-import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataHandler;
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
-import com.csci5408.distributeddatabase.queryexecutor.QueryExecutorHelper;
 import com.example.demo.query.CreateTableQuery;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -43,10 +40,15 @@ public class CreateTableExecutor {
         File file = new File(path+"\\"+databaseName+"\\"+tableName+".txt");
         if(!QueryExecutorHelper.isTableExistsInDatabase(databaseName,tableName)){
             localMetaDataHandler.makeMetadataForTable(databaseName,tableName);
+            localMetaDataHandler.addMetadataForTable(databaseName,tableName,"primaryKey",primaryKey);
+            localMetaDataHandler.addMetadataForTable(databaseName,tableName,"foreignKey",foreignKey);
+            localMetaDataHandler.addMetadataForTable(databaseName,tableName,"referenceTable",referenceTable);
+            localMetaDataHandler.addMetadataForTable(databaseName,tableName,"referenceTableField",referenceTableField);
             BufferedWriter writeFile = new BufferedWriter(new FileWriter(file));
             Set<String> columnNames = columns.keySet();
             for(String columnName: columnNames){
                 String column= columnName;
+                localMetaDataHandler.addMetadataForTable(databaseName,tableName,column,columns.get(column));
                 if(columnName.equalsIgnoreCase(primaryKey)){
                     column = column+"(PK)";
                 }
