@@ -1,0 +1,2 @@
+tablename (column1(int)),column2(varchar)),(Primary_Key: primarykey, Foreign_Key: foreignkey) * ----------------> 1 foreignkeytable(primarykeynameinforeigntable)
+tablename (column1(int)),column2(varchar)),(Primary_Key: primarykey)

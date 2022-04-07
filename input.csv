@@ -1,0 +1,2 @@
+Database,tablename,column1,int,column2,varchar,primarykey,foreignkey,primarykeynameinforeigntable,foreignkeytable
+Database,tablename,column1,int,column2,varchar,primarykey,null,null,null
