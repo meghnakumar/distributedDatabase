@@ -1,5 +1,7 @@
 package com.csci5408.distributeddatabase.globalmetadatahandler;
 
+import com.csci5408.distributeddatabase.fileoperations.PropertyUtil;
+
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,7 +20,7 @@ public class GlobalMetadataHandler
 
             if(prop.getProperty("currentinstance")==null)
             {
-                prop.setProperty("currentinstance", "localhost");
+                prop.setProperty("currentinstance", GlobalMetadataConstants.INSTANCE_CURRENT);
                 prop.store(output, "Global Metadata File");
             }
 
@@ -60,16 +62,6 @@ public class GlobalMetadataHandler
 
     public Properties getGlobalMetadataProperties()
     {
-        Properties prop = new Properties();
-        try
-        {
-            InputStream input = GlobalMetadataHandler.class.getClassLoader().getResourceAsStream("GlobalMetadata.properties");
-            prop.load(input);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return prop;
+        return PropertyUtil.getPropFromPropFile(GlobalMetadataConstants.GLOBAL_METADATA_FILE);
     }
 }
