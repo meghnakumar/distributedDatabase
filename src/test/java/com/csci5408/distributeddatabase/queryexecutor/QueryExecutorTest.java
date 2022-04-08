@@ -59,7 +59,9 @@ public class QueryExecutorTest
     @Test
     public void selectTableWithCriteriaTest() throws Exception
     {
-        String sql = "select * from person where name=janvi;";
+        useDatabaseQueryExecutorTest();
+
+        String sql = "select id, name from persons where name=janvi;";
         QueryParser parser = new QueryParser();
 
         SelectQuery selectQuery = (SelectQuery) parser.parse(sql);
@@ -88,7 +90,7 @@ public class QueryExecutorTest
         useDatabaseQueryExecutor.execute();
 
         //create table
-        sql = "create table persons(id int, name varchar(255), primary key (id), foreign key (id) references orders(id);";
+        sql = "create table persons(id int, name varchar(255), lastname varchar(255), primary key (id), foreign key (id) references orders(id);";
         parser = new QueryParser();
 
         CreateTableQuery createTableQuery= (CreateTableQuery) parser.parse(sql);

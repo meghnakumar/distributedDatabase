@@ -54,12 +54,12 @@ public class CreateTableExecutor implements IQueryExecutor{
                 String column= columnName;
                 localMetaDataHandler.addMetadataForTable(databaseName,tableName,column,columns.get(column));
                 if(columnName.equalsIgnoreCase(primaryKey)){
-                    column = column+"(PK)";
+                    //column = column+"(PK)";
                 }
                 if(columnName.equalsIgnoreCase(foreignKey)){
-                    column = column + "(FK)";
+                    //column = column + "(FK)";
                 }
-                column = column + "("+ columns.get(columnName) + ")";
+                //column = column + "("+ columns.get(columnName) + ")";
                 writeFile.write(column+" "+SEPERATOR);
             }
             writeFile.newLine();
