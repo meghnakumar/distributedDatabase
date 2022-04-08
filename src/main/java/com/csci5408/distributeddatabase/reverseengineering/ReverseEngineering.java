@@ -1,10 +1,6 @@
 package com.csci5408.distributeddatabase.reverseengineering;
 
-import com.csci5408.distributeddatabase.fileoperations.PropertyUtil;
-
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 
 public class ReverseEngineering {
@@ -64,7 +60,6 @@ public class ReverseEngineering {
     private String getRelationString(String primaryKey, String foreignKey, String foreignKeyTableName, String primaryKeyOfForeignKeyTable) {
         String relationString = "";
         String cardinality = " * ----------------> 1 ";
-        String nullString = "null";
 
         if(primaryKey != null) {
             relationString += "(Primary_Key: " + primaryKey;
