@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.csci5408.distributeddatabase;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class DemoApplicationTests {
+public class DistributedDatabaseApplicationTests {
 
 	@Test
 	public void contextLoads() {
