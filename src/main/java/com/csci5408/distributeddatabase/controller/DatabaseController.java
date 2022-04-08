@@ -1,6 +1,7 @@
 package com.csci5408.distributeddatabase.controller;
 
 import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataHandler;
+import com.csci5408.distributeddatabase.queryexecutor.QueryExecutor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -47,7 +48,7 @@ public class DatabaseController
         return globalMetadataHandler.getGlobalMetadataProperties();
     }
 
-    @PostMapping("/redirectUpdateGlobalMetaDataProp")
+    @PostMapping("/updateGlobalMetaDataProp")
     public Properties redirectUpdateGlobalMetadataProp(@RequestParam  String propName, @RequestParam  String propValue)
     {
         System.err.println("received value= "+propName+" _ "+propValue);
@@ -56,11 +57,21 @@ public class DatabaseController
         return globalMetadataHandler.getGlobalMetadataProperties();
     }
 
-    @PostMapping("/updateGlobalMetaDataProp")
+    @PostMapping("/executeQuery")
+    public String executeQuery(@RequestParam String query)
+    {
+        QueryExecutor queryExecutor = new QueryExecutor(query);
+        return queryExecutor.executeQuery();
+    }
+
+    //test controller
+    @PostMapping("/redirectUpdateGlobalMetaDataProp")
     public String updateGlobalMetadataProp(@RequestParam  String propName, @RequestParam  String propValue)
     {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8080/redirectUpdateGlobalMetaDataProp";
+        String url = "http://35.226.94.226:8080/redirectUpdateGlobalMetaDataProp";
+
+        System.err.println("routing to url "+url);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

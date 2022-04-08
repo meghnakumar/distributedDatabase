@@ -1,5 +1,6 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
+import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.fileoperations.FileUtil;
 import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataConstants;
 import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataHandler;
@@ -77,9 +78,17 @@ public class CreateDatabaseExecutor implements IQueryExecutor
             }
             else
             {
+                //make directory for new database
                 FileUtil.makeDirectory(databaseName);
-                globalMetadataHandler.initGlobalMetaData();
+
+                //update local global data prop
                 globalMetadataHandler.writeToMetaData(databaseName, GlobalMetadataConstants.INSTANCE_CURRENT);
+
+                //update other instance global metadata property
+                DistributedHelper distributedHelper = new DistributedHelper();
+                distributedHelper.updateGlobalMetadataPropInOtherInstance(databaseName, GlobalMetadataConstants.INSTANCE_OTHER);
+
+                //create local metadata for the database
                 localMetaDataHandler.makeMetadataForDatabase(databaseName);
             }
         }
