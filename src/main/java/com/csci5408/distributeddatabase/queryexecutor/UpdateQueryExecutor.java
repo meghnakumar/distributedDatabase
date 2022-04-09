@@ -37,7 +37,6 @@ public class UpdateQueryExecutor implements IQueryExecutor{
             result.append(distributedHelper.executeQueryInOtherInstance(this.updateQuery.getSql()));
             return result.toString();
         }
-
         column = updateQuery.getColumnName();
         updatedColumnValue = updateQuery.getUpdatedColumnValue();
         whereColumn = updateQuery.getCriteria().getLeftOperand();
@@ -46,25 +45,10 @@ public class UpdateQueryExecutor implements IQueryExecutor{
         if(QueryExecutorUtil.isTableExistsInDatabase(chosenDatabaseName,tableName)){
             tableData = TableStructureHelper.getTableStructure(chosenDatabaseName,tableName);
             for(HashMap<String,String> eachTableData: tableData){
-                if(operator.equalsIgnoreCase("=")) {
-                    if (eachTableData.keySet().contains(whereColumn)) {
-                        if (eachTableData.get(whereColumn).equalsIgnoreCase(whereValue)) {
-                            eachTableData.put(column, updatedColumnValue);
-                        }
-                    }
+                if( updateQuery.getCriteria()==null || (updateQuery.getCriteria()!=null && QueryExecutorUtil.checkCriteriaForRow(eachTableData, updateQuery.getCriteria()))){
+                    eachTableData.put(column, updatedColumnValue);
                 }
-                if(operator.equalsIgnoreCase("<=")){
-                    if(Integer.parseInt(eachTableData.get(whereColumn))<=Integer.parseInt(whereValue)){
-                        eachTableData.put(column,updatedColumnValue);
-                    }
-                }
-                if(operator.equalsIgnoreCase(">=")){
-                    if(Integer.parseInt(eachTableData.get(whereColumn))>=Integer.parseInt(whereValue)){
-                        eachTableData.put(column,updatedColumnValue);
-                    }
-                }
-
-                }
+            }
             String path= System.getProperty("user.dir")+ File.separator+chosenDatabaseName+File.separator+tableName+".txt";
             FileUtil.writeTableHashMapToFile(tableData, path);
             result.append("update changes happened successfully in table");
