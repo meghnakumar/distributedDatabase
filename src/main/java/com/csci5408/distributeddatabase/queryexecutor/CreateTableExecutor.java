@@ -52,9 +52,11 @@ public class CreateTableExecutor implements IQueryExecutor{
              referenceTableField = createTableQuery.getReferenceTableField();
         }
         LinkedHashMap<String,String> columns = createTableQuery.getFieldMap();
-        String path= System.getProperty("user.dir")+"\\";
-        File file = new File(path+"\\"+databaseName+"\\"+tableName+".txt");
-        System.err.println("cretaing a new file for table "+ path+"\\"+databaseName+"\\"+tableName+".txt");
+
+        String path= System.getProperty("user.dir")+File.separator+databaseName+File.separator+tableName+".txt";
+        File file = new File(path);
+        System.err.println("creting a new file for table "+ path);
+
         if(!QueryExecutorUtil.isTableExistsInDatabase(databaseName,tableName)){
             localMetaDataHandler.makeMetadataForTable(databaseName,tableName);
             localMetaDataHandler.addMetadataForTable(databaseName,tableName,"primaryKey",primaryKey);

@@ -4,6 +4,8 @@ import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.fileoperations.FileUtil;
 import com.csci5408.distributeddatabase.query.UpdateQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -63,7 +65,8 @@ public class UpdateQueryExecutor implements IQueryExecutor{
                 }
 
                 }
-            FileUtil.writeTableHashMapToFile(tableData,System.getProperty("user.dir") + "\\" + chosenDatabaseName + "\\" + tableName + ".txt");
+            String path= System.getProperty("user.dir")+ File.separator+chosenDatabaseName+File.separator+tableName+".txt";
+            FileUtil.writeTableHashMapToFile(tableData, path);
             result.append("update changes happened successfully in table");
         }
         else

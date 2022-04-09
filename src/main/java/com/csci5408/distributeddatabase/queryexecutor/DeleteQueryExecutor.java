@@ -6,6 +6,7 @@ import com.csci5408.distributeddatabase.query.DeleteQuery;
 import com.csci5408.distributeddatabase.query.UpdateQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -72,7 +73,8 @@ public class DeleteQueryExecutor implements IQueryExecutor {
                 }
 
             }
-            FileUtil.writeTableHashMapToFile(updatedTableData,System.getProperty("user.dir") + "\\" + chosenDatabaseName + "\\" + tableName + ".txt");
+            String path= System.getProperty("user.dir")+ File.separator+chosenDatabaseName+File.separator+tableName+".txt";
+            FileUtil.writeTableHashMapToFile(updatedTableData, path);
             result.append("changes updated in table and flushed to file successfully");
         }
         result.append("The table does not exist in this instance");
