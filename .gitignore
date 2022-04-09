@@ -24,3 +24,6 @@
 /nbdist/
 /.nb-gradle/
 /.mvn/
+/.mvn/
+/LOCALMETADATA/demo/persons.properties
+/GlobalMetadata.properties

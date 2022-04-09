@@ -69,8 +69,9 @@ public class FileUtil
         if(new File(filePath).exists())
         {
             System.err.println(filePath+" already exists deleting and creating it again");
-            Files.deleteIfExists(Paths.get(filePath));
-            Files.createFile(Paths.get(filePath));
+            PrintWriter writer = new PrintWriter(filePath);
+            writer.write("");
+            writer.close();
         }
     }
 

@@ -1,5 +1,6 @@
 package com.csci5408.distributeddatabase.queryexecutor.util;
 
+import ch.qos.logback.classic.db.names.ColumnName;
 import com.csci5408.distributeddatabase.fileoperations.FileUtil;
 import com.csci5408.distributeddatabase.query.Criteria;
 import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
@@ -77,6 +78,7 @@ public class QueryExecutorUtil
             for(String columnName : columns)
             {
                 String columnValue = row.get(columnName);
+                columnName = columnName.trim();
                 if(columnName.equals(criteria.getLeftOperand()))
                 {
                     boolean isColumnInteger = isColumnInteger(columnValue);
