@@ -6,7 +6,7 @@ import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class UpdateQueryExecutor {
+public class UpdateQueryExecutor implements IQueryExecutor{
 
     private String tableName;
     private String column;
@@ -21,6 +21,7 @@ public class UpdateQueryExecutor {
         this.updateQuery = updateQuery;
     }
 
+    @Override
     public boolean execute() throws Exception {
         String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
         tableName = updateQuery.getTableName();

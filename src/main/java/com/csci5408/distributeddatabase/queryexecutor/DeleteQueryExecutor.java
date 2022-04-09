@@ -8,7 +8,7 @@ import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class DeleteQueryExecutor {
+public class DeleteQueryExecutor implements IQueryExecutor {
     private String tableName;
     private String whereColumn;
     private String whereValue;
@@ -23,6 +23,7 @@ public class DeleteQueryExecutor {
         this.deleteQuery = deleteQuery;
     }
 
+    @Override
     public boolean execute() throws Exception {
         //String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
         String chosenDatabaseName = "admin";
