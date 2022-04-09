@@ -23,39 +23,40 @@ public class DeleteQueryExecutor implements IQueryExecutor {
     }
 
     @Override
-    public boolean execute() throws Exception {
+    public boolean execute(Transaction transaction) throws Exception {
         String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
 //        String chosenDatabaseName = "admin";
         tableName = deleteQuery.getTableName();
         whereColumn = deleteQuery.getCriteria().getLeftOperand();
         whereValue = deleteQuery.getCriteria().getRightOperand();
         operator = deleteQuery.getCriteria().getOperator();
-        if(QueryExecutorUtil.isTableExistsInDatabase(chosenDatabaseName,tableName)) {
-            tableData = TableStructureHelper.getTableStructure(chosenDatabaseName,tableName);
-            for(HashMap<String,String> eachTableData: tableData){
-                if(operator.equalsIgnoreCase("=") || operator.equalsIgnoreCase("!=")){
-                    if (eachTableData.get(whereColumn).equalsIgnoreCase(whereValue)){
+        if (transaction != null || QueryExecutorUtil.isTableExistsInDatabase(chosenDatabaseName, tableName)) {
+            if (transaction == null) {
+                tableData = TableStructureHelper.getTableStructure(chosenDatabaseName, tableName);
+            } else {
+                tableData = transaction.getTransactionalTableData().get(deleteQuery.getTableName());
+            }
+            for (HashMap<String, String> eachTableData : tableData) {
+                if (operator.equalsIgnoreCase("=") || operator.equalsIgnoreCase("!=")) {
+                    if (eachTableData.get(whereColumn).equalsIgnoreCase(whereValue)) {
                         //do nothing
-                    }
-                    else{
+                    } else {
                         updatedHashMap = eachTableData;
                         updatedTableData.add(updatedHashMap);
                     }
                 }
-                if(operator.equalsIgnoreCase("<=")){
-                    if(Integer.parseInt(eachTableData.get(whereColumn))<=Integer.parseInt(whereValue)){
+                if (operator.equalsIgnoreCase("<=")) {
+                    if (Integer.parseInt(eachTableData.get(whereColumn)) <= Integer.parseInt(whereValue)) {
                         //do nothing
-                    }
-                    else {
+                    } else {
                         updatedHashMap = eachTableData;
                         updatedTableData.add(updatedHashMap);
                     }
                 }
-                if(operator.equalsIgnoreCase(">=")){
-                    if(Integer.parseInt(eachTableData.get(whereColumn))<=Integer.parseInt(whereValue)){
+                if (operator.equalsIgnoreCase(">=")) {
+                    if (Integer.parseInt(eachTableData.get(whereColumn)) <= Integer.parseInt(whereValue)) {
                         //do nothing
-                    }
-                    else {
+                    } else {
                         updatedHashMap = eachTableData;
                         updatedTableData.add(updatedHashMap);
                     }
@@ -63,7 +64,11 @@ public class DeleteQueryExecutor implements IQueryExecutor {
 
             }
         }
-        FileUtil.writeTableHashMapToFile(updatedTableData,System.getProperty("user.dir") + "\\" + chosenDatabaseName + "\\" + tableName + ".txt");
+        if (transaction == null) {
+            FileUtil.writeTableHashMapToFile(updatedTableData, System.getProperty("user.dir") + "\\" + chosenDatabaseName + "\\" + tableName + ".txt");
+        } else {
+            transaction.getTransactionalTableData().put(deleteQuery.getTableName(), updatedTableData);
+        }
         return true;
     }
 }

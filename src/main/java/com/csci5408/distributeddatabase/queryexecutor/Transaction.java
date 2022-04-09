@@ -2,16 +2,14 @@ package com.csci5408.distributeddatabase.queryexecutor;
 
 import com.csci5408.distributeddatabase.query.Query;
 
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Queue;
+import java.util.*;
 
 public class Transaction {
     // Queue of queries
     private Queue<Query> queries;
     private String databaseName;
-    private Map<String, Properties> transactionalTable;
+    private Map<String, Properties> transactionalTableProp;
+    private Map<String, ArrayList> transactionalTableData;
 
     // constructor
     public Transaction() {
@@ -33,12 +31,12 @@ public class Transaction {
         this.queries.add(query);
     }
 
-    public Map<String, Properties> getTransactionalTable() {
-        return transactionalTable;
+    public Map<String, Properties> getTransactionalTableProp() {
+        return transactionalTableProp;
     }
 
-    public void setTransactionalTable(Map<String, Properties> transactionalTable) {
-        this.transactionalTable = transactionalTable;
+    public void setTransactionalTableProp(Map<String, Properties> transactionalTableProp) {
+        this.transactionalTableProp = transactionalTableProp;
     }
 
     public String getDatabaseName() {
@@ -47,5 +45,13 @@ public class Transaction {
 
     public void setDatabaseName(String databaseName) {
         this.databaseName = databaseName;
+    }
+
+    public Map<String, ArrayList> getTransactionalTableData() {
+        return transactionalTableData;
+    }
+
+    public void setTransactionalTableData(Map<String, ArrayList> transactionalTableData) {
+        this.transactionalTableData = transactionalTableData;
     }
 }
