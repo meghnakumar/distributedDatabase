@@ -1,1 +1,0 @@
-persons(name(varchar(255)),id(int),)(Primary_Key: id, Foreign_Key: id) * ----------------> 1 orders(id)

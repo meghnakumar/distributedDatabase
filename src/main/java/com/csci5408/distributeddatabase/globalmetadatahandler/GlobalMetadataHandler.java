@@ -1,12 +1,6 @@
 package com.csci5408.distributeddatabase.globalmetadatahandler;
 
-import com.csci5408.distributeddatabase.fileoperations.FileUtil;
-import com.csci5408.distributeddatabase.fileoperations.PropertyUtil;
-
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Properties;
 
 public class GlobalMetadataHandler

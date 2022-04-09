@@ -1,12 +1,9 @@
 package com.csci5408.distributeddatabase.localmetadatahandler;
 
-import com.csci5408.distributeddatabase.fileoperations.FileUtil;
-import com.csci5408.distributeddatabase.fileoperations.PropertyUtil;
+import com.csci5408.distributeddatabase.util.FileUtil;
+import com.csci5408.distributeddatabase.util.PropertyUtil;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Properties;
 
 public class LocalMetaDataHandler

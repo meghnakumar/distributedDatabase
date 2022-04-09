@@ -1,13 +1,10 @@
-package com.csci5408.distributeddatabase.fileoperations;
+package com.csci5408.distributeddatabase.util;
 
 import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 public class FileUtil
@@ -23,6 +20,10 @@ public class FileUtil
         System.err.println("checking if directory exists "+path);
         File directory = new File(path);
         return directory.exists() && directory.isDirectory();
+    }
+
+    public static boolean createDirectory(String path) {
+        return new File(path).mkdirs();
     }
 
     public static boolean makeDirectory(String path)

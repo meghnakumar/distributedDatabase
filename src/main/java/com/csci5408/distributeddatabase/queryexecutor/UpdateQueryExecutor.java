@@ -1,6 +1,6 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
-import com.csci5408.distributeddatabase.fileoperations.FileUtil;
+import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.query.UpdateQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 import java.util.ArrayList;

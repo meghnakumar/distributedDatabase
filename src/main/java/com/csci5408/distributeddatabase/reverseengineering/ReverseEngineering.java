@@ -1,5 +1,8 @@
 package com.csci5408.distributeddatabase.reverseengineering;
 
+import com.csci5408.distributeddatabase.util.FileUtil;
+import com.csci5408.distributeddatabase.util.ReadMetaDataUtil;
+
 import java.io.*;
 import java.util.*;
 
@@ -8,44 +11,76 @@ public class ReverseEngineering {
     public void reverseEngineering(String databaseName) throws Exception {
 
         String directoryPath = "LOCALMETADATA/" + databaseName;
+        boolean directoryExists = FileUtil.createDirectory("ER");
         File directory = new File(directoryPath);
 
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("ER/Entity_Relationship.txt"));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("ER/" + databaseName +"_Entity_Relationship.txt"));
         if(directory.exists()) {
             for(File file: directory.listFiles()) {
-                Properties fileProperties = new Properties(); //PropertyUtil.getPropFromPropFile(file.getPath());
-                fileProperties.load(new FileInputStream(file));
-                Set tableSet = fileProperties.entrySet();
 
-                String primaryKey = "";
-                String foreignKey = "";
-                String referenceTable = "";
-                String referenceTableField = "";
-                String tableColumn = "";
+                String tableName = file.getName().replace(".properties","");
+                String singleTableEntityRelation = tableName + "(";
 
-                String singleTableEntityRelation = file.getName().replace(".properties","") + "(";
+                Map<String, String> tableContent = ReadMetaDataUtil.getMetadata(file);
 
-                Iterator iterator = tableSet.iterator();
-                while (iterator.hasNext()) {
-                    Map.Entry tableMap = (Map.Entry) iterator.next();
-                    String key = (String) tableMap.getKey();
-                    String value = (String) tableMap.getValue();
+                String primaryKey = null;
+                String foreignKey = null;
+                String referenceTable = null;
+                String referenceTableField = null;
 
-                    if (key.equals("primaryKey")) {
-                        primaryKey = value;
-                    } else if (key.equals("foreignKey")) {
-                        foreignKey = value;
-                    } else if (key.equals("referenceTable")) {
-                        referenceTable = value;
-                    } else if (key.equals("referenceTableField")) {
-                        referenceTableField = value;
-                    } else {
-                        tableColumn += key + "(" + value + "),";
+                if(!tableContent.isEmpty()) {
+                    primaryKey = tableContent.get("primaryKey");
+                    foreignKey = tableContent.get("foreignKey");
+                    referenceTable = tableContent.get("referenceTable");
+                    referenceTableField = tableContent.get("referenceTableField");
+                    String tableColumn = tableContent.get("tableColumn");
+
+                    if (tableColumn != null) {
+                        String[] tableColumns = tableColumn.split(", ");
+                        for (String singleColumn : tableColumns) {
+                            String[] columnAndDataType = singleColumn.split(" ");
+                            singleTableEntityRelation += columnAndDataType[0] + "(" + columnAndDataType[1] + "),";
+                        }
                     }
                 }
 
-                singleTableEntityRelation += tableColumn + ")" + getRelationString(primaryKey, foreignKey,
-                        referenceTable, referenceTableField);
+                String cardinality = "";
+                File tableData = new File(databaseName+"/"+tableName+".txt");
+                if(foreignKey != null && tableData.exists()) {
+                    BufferedReader bufferedReader = new BufferedReader(new FileReader(tableData));
+                    String line = "";
+                    int fkPosition = 0;
+                    boolean fkPositionFound = false;
+                    Set<String> fkSet = new HashSet<>();
+
+                    boolean firstLine = true;
+                    while((line = bufferedReader.readLine()) != null) {
+                        if(firstLine) {
+                            String[] coulmnNames = line.split("\\*\\|\\*\\|");
+                            for(String columnName: coulmnNames) {
+                                String column = columnName.substring(0, columnName.length()-1);
+                                if(column.equals(foreignKey)) {
+                                    fkPositionFound = true;
+                                } else if (!(column.equals(foreignKey)) && !fkPositionFound) {
+                                    fkPosition++;
+                                }
+                            }
+                            firstLine = false;
+                        }
+                        else {
+                            String[] columnData = line.split("\\*\\|\\*\\|");
+                            if(!fkSet.isEmpty() && fkSet.contains(columnData[fkPosition])) {
+                                cardinality = "N";
+                                break;
+                            } else {
+                                fkSet.add(columnData[fkPosition]);
+                            }
+                        }
+                    }
+                    cardinality = cardinality == "" ? "1" : cardinality;
+                }
+
+                singleTableEntityRelation += getRelationString(primaryKey, foreignKey, referenceTable, referenceTableField, cardinality);
 
                 bufferedWriter.write(singleTableEntityRelation);
                 bufferedWriter.newLine();
@@ -57,18 +92,18 @@ public class ReverseEngineering {
         bufferedWriter.close();
     }
 
-    private String getRelationString(String primaryKey, String foreignKey, String foreignKeyTableName, String primaryKeyOfForeignKeyTable) {
+    private String getRelationString(String primaryKey, String foreignKey, String foreignKeyTableName, String primaryKeyOfForeignKeyTable, String cardinality) {
         String relationString = "";
-        String cardinality = " * ----------------> 1 ";
+        String relationWithCardinality = " * ----------------> " + cardinality + " ";
 
         if(primaryKey != null) {
             relationString += "(Primary_Key: " + primaryKey;
         }
 
-        if(!(foreignKey.equals("") && foreignKeyTableName.equals("") && primaryKeyOfForeignKeyTable.equals(""))) {
-            relationString += ", Foreign_Key: " + foreignKey + ")" + cardinality + foreignKeyTableName + "(" + primaryKeyOfForeignKeyTable + ")";
+        if(foreignKey != null && foreignKeyTableName != null && primaryKeyOfForeignKeyTable != null) {
+            relationString += ", Foreign_Key: " + foreignKey + "))" + relationWithCardinality + foreignKeyTableName + "(" + primaryKeyOfForeignKeyTable + ")";
         } else {
-            relationString += ")";
+            relationString += "))";
         }
 
         return relationString;

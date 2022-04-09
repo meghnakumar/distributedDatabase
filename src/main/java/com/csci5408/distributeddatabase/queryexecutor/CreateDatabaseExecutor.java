@@ -1,7 +1,7 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
 import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
-import com.csci5408.distributeddatabase.fileoperations.FileUtil;
+import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataConstants;
 import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataHandler;
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;

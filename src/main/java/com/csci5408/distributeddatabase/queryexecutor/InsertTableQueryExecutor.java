@@ -1,6 +1,6 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
-import com.csci5408.distributeddatabase.fileoperations.FileUtil;
+import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.query.InsertQuery;
 import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;

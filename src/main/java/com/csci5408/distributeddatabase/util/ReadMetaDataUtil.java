@@ -1,15 +1,13 @@
 package com.csci5408.distributeddatabase.util;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.*;
 
-public class ReadMetadata {
+public class ReadMetaDataUtil {
 
     public static Map<String, String> getMetadata(File file) throws Exception {
 
-        Properties fileProperties = new Properties(); //PropertyUtil.getPropFromPropFile(file.getPath());
-        fileProperties.load(new FileInputStream(file));
+        Properties fileProperties = PropertyUtil.getPropFromPropFile(file.getPath());
         Set tableSet = fileProperties.entrySet();
 
         String primaryKey = fileProperties.getProperty("primaryKey");

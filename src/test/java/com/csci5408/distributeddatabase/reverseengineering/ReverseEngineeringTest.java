@@ -8,6 +8,6 @@ public class ReverseEngineeringTest {
     @Test
     public void generateEntityRelationTest() throws Exception {
         ReverseEngineering reverseEngineering = new ReverseEngineering();
-        //reverseEngineering.reverseEngineering("demo");
+        reverseEngineering.reverseEngineering("demo");
     }
 }

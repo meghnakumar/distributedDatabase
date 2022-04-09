@@ -1,4 +1,4 @@
-package com.csci5408.distributeddatabase.fileoperations;
+package com.csci5408.distributeddatabase.util;
 
 import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataHandler;
 
