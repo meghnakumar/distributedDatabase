@@ -26,6 +26,8 @@ public class SelectQueryExecutor implements IQueryExecutor
         String tableName = selectQuery.getTableName();
         DistributedHelper distributedHelper = new DistributedHelper();
 
+        System.err.println("select queru criteria = "+selectQuery.getCriteria());
+
         if(!distributedHelper.isDatabasePresentInLocalInstance(databaseName))
         {
             result.append(distributedHelper.executeQueryInOtherInstance(this.selectQuery.getSql()));
@@ -61,7 +63,7 @@ public class SelectQueryExecutor implements IQueryExecutor
                 }
 
                 //display all the rows present in the table
-                if(QueryExecutorUtil.checkCriteriaForRow(row, selectQuery.getCriteria()))
+                if( selectQuery.getCriteria()==null || (selectQuery.getCriteria()!=null && QueryExecutorUtil.checkCriteriaForRow(row, selectQuery.getCriteria())))
                 {
                     for(String column: columns)
                     {
