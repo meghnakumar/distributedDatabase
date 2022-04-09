@@ -1,28 +1,45 @@
 package com.csci5408.distributeddatabase.globalmetadatahandler;
 
+import com.csci5408.distributeddatabase.fileoperations.FileUtil;
 import com.csci5408.distributeddatabase.fileoperations.PropertyUtil;
 
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 public class GlobalMetadataHandler
 {
+    public GlobalMetadataHandler()
+    {
+        initGlobalMetaData();
+    }
+
     public boolean initGlobalMetaData()
     {
         boolean result = false;
-
         try
         {
-            OutputStream output = new FileOutputStream("src/main/resources/GlobalMetadata.properties");
-            Properties prop = getGlobalMetadataProperties();
+            File propFile = new File(GlobalMetadataConstants.GLOBAL_METADATA_FILE_PATH);
 
-            if(prop.getProperty("currentinstance")==null)
+            if(!propFile.exists())
             {
-                prop.setProperty("currentinstance", GlobalMetadataConstants.INSTANCE_CURRENT);
-                prop.store(output, "Global Metadata File");
+                System.err.println("creating new global metadata file" +propFile.createNewFile());
             }
+
+            FileInputStream in = new FileInputStream(GlobalMetadataConstants.GLOBAL_METADATA_FILE_PATH);
+            Properties prop = new Properties();
+            prop.load(in);
+            in.close();
+
+            FileOutputStream out = new FileOutputStream(GlobalMetadataConstants.GLOBAL_METADATA_FILE_PATH);
+            if(!prop.containsKey("current_instance"))
+            {
+                prop.setProperty("current_instance", "localhost");
+            }
+            prop.store(out, null);
+            out.close();
 
             result=true;
         }
@@ -38,17 +55,21 @@ public class GlobalMetadataHandler
         boolean result = false;
         try
         {
-            OutputStream output = new FileOutputStream("src/main/resources/GlobalMetadata.properties", true);
+            OutputStream output = new FileOutputStream(GlobalMetadataConstants.GLOBAL_METADATA_FILE_PATH, true);
             Properties  prop = getGlobalMetadataProperties();
 
-            if(prop.getProperty(propName)==null)
+            if(!prop.containsKey(propName))
             {
                 prop.setProperty(propName, propValue);
             }
-            else
+            else if(prop.containsKey(propName))
             {
                 prop.replace(propName, propValue);
             }
+
+            PrintWriter writer = new PrintWriter(GlobalMetadataConstants.GLOBAL_METADATA_FILE_PATH);
+            writer.print("");
+            writer.close();
 
             prop.store(output, null);
             result=true;
@@ -62,6 +83,17 @@ public class GlobalMetadataHandler
 
     public Properties getGlobalMetadataProperties()
     {
-        return PropertyUtil.getPropFromPropFile(GlobalMetadataConstants.GLOBAL_METADATA_FILE);
+        Properties prop = new Properties();
+        try
+        {
+            InputStream input = new FileInputStream(GlobalMetadataConstants.GLOBAL_METADATA_FILE_PATH);
+            prop.load(input);
+            input.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return prop;
     }
 }

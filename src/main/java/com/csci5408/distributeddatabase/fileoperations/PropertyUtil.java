@@ -2,6 +2,7 @@ package com.csci5408.distributeddatabase.fileoperations;
 
 import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataHandler;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,6 +19,7 @@ public class PropertyUtil
             Properties prop = new Properties();
             OutputStream output = new FileOutputStream(path);
             prop.store(output, "Metadata File");
+            output.close();
         }
         catch(Exception e)
         {
@@ -29,12 +31,13 @@ public class PropertyUtil
 
     public static Properties getPropFromPropFile(String propPath)
     {
-        System.err.println("creating a new property file "+propPath);
+        System.err.println("Reading property file from location"+propPath);
         Properties prop = new Properties();
         try
         {
-            InputStream input = GlobalMetadataHandler.class.getClassLoader().getResourceAsStream(propPath);
+            InputStream input = new FileInputStream(propPath);
             prop.load(input);
+            input.close();
         }
         catch (Exception e)
         {
@@ -49,19 +52,22 @@ public class PropertyUtil
         boolean result = true;
         try
         {
-            OutputStream output = new FileOutputStream(propPath, true);
-            Properties  prop = getPropFromPropFile(propPath);
+            FileInputStream in = new FileInputStream(propPath);
+            Properties prop = new Properties();
+            prop.load(in);
+            in.close();
 
-            if(prop.getProperty(propKey)==null)
+            FileOutputStream out = new FileOutputStream(propPath);
+            if(!prop.containsKey(propKey))
             {
                 prop.setProperty(propKey, propValue);
             }
-            else
+            else if(prop.containsKey(propKey))
             {
                 prop.replace(propKey, propValue);
             }
-            prop.store(output, null);
-
+            prop.store(out, null);
+            out.close();
         }
         catch(Exception e)
         {
