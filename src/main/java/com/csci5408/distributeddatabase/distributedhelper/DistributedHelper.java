@@ -27,6 +27,8 @@ public class DistributedHelper
         if(prop.containsKey(databaseName))
         {
             String databaseInstanceIp = prop.getProperty(databaseName);
+            System.err.println("current instance IP="+currentInstanceIP+" database ip= "+databaseInstanceIp);
+            System.err.println("Is database present in current instance = "+ currentInstanceIP.equals(databaseInstanceIp));
             return currentInstanceIP.equals(databaseInstanceIp);
         }
         else
