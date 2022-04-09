@@ -1,7 +1,6 @@
 package com.csci5408.distributeddatabase.query.validator;
 
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
-import com.csci5408.distributeddatabase.query.InsertQuery;
 import com.csci5408.distributeddatabase.query.Query;
 import com.csci5408.distributeddatabase.query.SelectQuery;
 import com.csci5408.distributeddatabase.queryexecutor.Transaction;
@@ -9,7 +8,6 @@ import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 public class SelectQueryValidator implements Validator {
     @Override
@@ -26,7 +24,7 @@ public class SelectQueryValidator implements Validator {
             LocalMetaDataHandler localMetaDataHandler = new LocalMetaDataHandler();
             tableMetadataProp = localMetaDataHandler.getTableMetadataProp(databaseName, selectQuery.getTableName());
         } else {
-            tableMetadataProp = transaction.getTransactionalTable().get(selectQuery.getTableName());
+            tableMetadataProp = transaction.getTransactionalTableProp().get(selectQuery.getTableName());
             if (tableMetadataProp == null) {
                 throw new IllegalArgumentException("OOPS!! Table doesn't exists");
             }

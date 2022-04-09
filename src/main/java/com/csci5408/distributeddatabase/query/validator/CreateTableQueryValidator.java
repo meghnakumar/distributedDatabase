@@ -18,7 +18,7 @@ public class CreateTableQueryValidator implements Validator {
             throw new IllegalArgumentException("OOPS!! Table already exists");
         }
         if (transaction != null) {
-            if (transaction.getTransactionalTable().containsKey(createTableQuery.getTableName())) {
+            if (transaction.getTransactionalTableProp().containsKey(createTableQuery.getTableName())) {
                 throw new IllegalArgumentException("OOPS!! Table already exists");
             }
             Properties properties = new Properties();
@@ -33,7 +33,7 @@ public class CreateTableQueryValidator implements Validator {
             for (Map.Entry<String, String> entrySet : createTableQuery.getFieldMap().entrySet()) {
                 properties.setProperty(entrySet.getKey(), entrySet.getValue());
             }
-            transaction.getTransactionalTable().put(createTableQuery.getTableName(), properties);
+            transaction.getTransactionalTableProp().put(createTableQuery.getTableName(), properties);
         }
     }
 }

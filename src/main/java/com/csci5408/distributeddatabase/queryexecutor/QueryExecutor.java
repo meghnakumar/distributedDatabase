@@ -1,8 +1,8 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
+import com.csci5408.distributeddatabase.fileoperations.FileUtil;
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
 import com.csci5408.distributeddatabase.query.*;
-import com.csci5408.distributeddatabase.query.parsers.Parser;
 import com.csci5408.distributeddatabase.query.parsers.QueryParser;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 
@@ -51,12 +51,12 @@ public class QueryExecutor {
                 case CREATE_DATABASE:
                     CreatDatabaseQuery creatDatabaseQuery = (CreatDatabaseQuery) query;
                     CreateDatabaseExecutor createDatabaseExecutor = new CreateDatabaseExecutor(creatDatabaseQuery);
-                    createDatabaseExecutor.execute();
+                    createDatabaseExecutor.execute(null);
                     break;
                 case INSERT:
                     InsertQuery insertQuery = (InsertQuery) query;
                     InsertTableQueryExecutor insertTableQueryExecutor = new InsertTableQueryExecutor(insertQuery);
-                    insertTableQueryExecutor.execute();
+                    insertTableQueryExecutor.execute(null);
                     break;
                 case CREATE_TABLE:
                     if (!QueryExecutorUtil.isDatabaseChosen())
@@ -64,7 +64,7 @@ public class QueryExecutor {
                     else {
                         CreateTableQuery createTableQuery = (CreateTableQuery) query;
                         CreateTableExecutor createTableExecutor = new CreateTableExecutor(createTableQuery, QueryExecutorUtil.getChosenDatabase());
-                        createTableExecutor.execute();
+                        createTableExecutor.execute(null);
                     }
                     break;
                 case UPDATE:
@@ -73,7 +73,7 @@ public class QueryExecutor {
                     else {
                         UpdateQuery updateQuery = (UpdateQuery) query;
                         UpdateQueryExecutor updateQueryExecutor = new UpdateQueryExecutor(updateQuery);
-                        updateQueryExecutor.execute();
+                        updateQueryExecutor.execute(null);
                     }
                     break;
                 case DELETE:
@@ -82,7 +82,7 @@ public class QueryExecutor {
                     else {
                         DeleteQuery deleteQuery = (DeleteQuery) query;
                         DeleteQueryExecutor deleteQueryExecutor = new DeleteQueryExecutor(deleteQuery);
-                        deleteQueryExecutor.execute();
+                        deleteQueryExecutor.execute(null);
                     }
                     break;
                 case SELECT:
@@ -91,13 +91,13 @@ public class QueryExecutor {
                     else {
                         SelectQuery selectQuery = (SelectQuery) query;
                         SelectQueryExecutor selectQueryExecutor = new SelectQueryExecutor(selectQuery);
-                        selectQueryExecutor.execute();
+                        selectQueryExecutor.execute(null);
                     }
                     break;
                 case USE:
                     UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery) query;
                     UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-                    useDatabaseQueryExecutor.execute();
+                    useDatabaseQueryExecutor.execute(null);
                     break;
                 default:
                     System.err.println("You have entered an invalid query");
@@ -118,9 +118,18 @@ public class QueryExecutor {
         for (Query query : queries) {
             queryParser.validateQuery(query, transaction);
         }
+        boolean isQuerySuccessfullyExecuted = false;
         for (Query query : queries) {
             executor = getQueryExecutorByQueryType(query);
-            executor.execute();
+            isQuerySuccessfullyExecuted = executor.execute(transaction);
+            if(!isQuerySuccessfullyExecuted) {
+                break;
+            }
+        }
+        if(isQuerySuccessfullyExecuted) {
+            for (Map.Entry<String, ArrayList> tableData : transaction.getTransactionalTableData().entrySet()) {
+                FileUtil.writeTableHashMapToFile(tableData.getValue(), System.getProperty("user.dir") + "\\" + transaction.getDatabaseName() + "\\" + tableData.getKey() + ".txt");
+            }
         }
     }
 
@@ -145,14 +154,20 @@ public class QueryExecutor {
 
     private void initializeTableInTransaction(Transaction transaction) throws IOException {
         Map<String, Properties> prop = new HashMap<>();
+        Map<String, ArrayList> tableData = new HashMap<>();
         File file = new File(LocalMetaDataHandler.getDatabaseMetadataFolderPath(transaction.getDatabaseName()));
         File[] fileList = file.listFiles();
+        String tableName;
 
         for (File list : fileList) {
             Properties properties = new Properties();
             properties.load(new FileInputStream(list));
-            prop.put(list.getName().replace("properties", "").replace(".", ""), properties);
+            tableName = list.getName().replace("properties", "").replace(".", "");
+            prop.put(tableName, properties);
+            ArrayList tableStructure = TableStructureHelper.getTableStructure(transaction.getDatabaseName(), tableName);
+            tableData.put(tableName, tableStructure);
         }
-        transaction.setTransactionalTable(prop);
+        transaction.setTransactionalTableProp(prop);
+        transaction.setTransactionalTableData(tableData);
     }
 }

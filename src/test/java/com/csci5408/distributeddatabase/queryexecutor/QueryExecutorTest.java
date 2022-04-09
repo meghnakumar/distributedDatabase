@@ -15,7 +15,7 @@ public class QueryExecutorTest
 
         CreatDatabaseQuery creatDatabaseQuery = (CreatDatabaseQuery)parser.parse(sql);
         CreateDatabaseExecutor createDatabaseExecutor = new CreateDatabaseExecutor(creatDatabaseQuery);
-        createDatabaseExecutor.execute();
+        createDatabaseExecutor.execute(null);
     }
 
     @Test
@@ -27,7 +27,7 @@ public class QueryExecutorTest
 
         UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery)parser.parse(sql);
         UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-        useDatabaseQueryExecutor.execute();
+        useDatabaseQueryExecutor.execute(null);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class QueryExecutorTest
 
         CreateTableQuery createTableQuery= (CreateTableQuery) parser.parse(sql);
         CreateTableExecutor createTableExecutor = new CreateTableExecutor(createTableQuery, "demo");
-        createTableExecutor.execute();
+        createTableExecutor.execute(null);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class QueryExecutorTest
 
         InsertQuery insertQuery = (InsertQuery) parser.parse(sql);
         InsertTableQueryExecutor insertTableQueryExecutor = new InsertTableQueryExecutor(insertQuery);
-        insertTableQueryExecutor.execute();
+        insertTableQueryExecutor.execute(null);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class QueryExecutorTest
 
         SelectQuery selectQuery = (SelectQuery) parser.parse(sql);
         SelectQueryExecutor selectQueryExecutor = new SelectQueryExecutor(selectQuery);
-        selectQueryExecutor.execute();
+        selectQueryExecutor.execute(null);
     }
 
 
@@ -79,7 +79,7 @@ public class QueryExecutorTest
 
         CreatDatabaseQuery creatDatabaseQuery = (CreatDatabaseQuery)parser.parse(sql);
         CreateDatabaseExecutor createDatabaseExecutor = new CreateDatabaseExecutor(creatDatabaseQuery);
-        createDatabaseExecutor.execute();
+        createDatabaseExecutor.execute(null);
 
         //useDatabase
         sql = "use demo;";
@@ -87,7 +87,7 @@ public class QueryExecutorTest
 
         UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery)parser.parse(sql);
         UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-        useDatabaseQueryExecutor.execute();
+        useDatabaseQueryExecutor.execute(null);
 
         //create table
         sql = "create table persons(id int, name varchar(255), lastname varchar(255), primary key (id), foreign key (id) references orders(id);";
@@ -95,7 +95,7 @@ public class QueryExecutorTest
 
         CreateTableQuery createTableQuery= (CreateTableQuery) parser.parse(sql);
         CreateTableExecutor createTableExecutor = new CreateTableExecutor(createTableQuery, "demo");
-        createTableExecutor.execute();
+        createTableExecutor.execute(null);
 
         //insert table test
         sql = "insert into persons(id, name, lastname) values (1, janvi, patel);";
@@ -103,14 +103,14 @@ public class QueryExecutorTest
 
         InsertQuery insertQuery = (InsertQuery) parser.parse(sql);
         InsertTableQueryExecutor insertTableQueryExecutor = new InsertTableQueryExecutor(insertQuery);
-        insertTableQueryExecutor.execute();
+        insertTableQueryExecutor.execute(null);
 
         sql = "insert into persons(id, name, lastname) values (2, shathish, annamalai);";
         parser = new QueryParser();
 
         insertQuery = (InsertQuery) parser.parse(sql);
         insertTableQueryExecutor = new InsertTableQueryExecutor(insertQuery);
-        insertTableQueryExecutor.execute();
+        insertTableQueryExecutor.execute(null);
 
         //select table test
         sql = "select * from persons where name=janvi;";
@@ -118,7 +118,7 @@ public class QueryExecutorTest
 
         SelectQuery selectQuery = (SelectQuery) parser.parse(sql);
         SelectQueryExecutor selectQueryExecutor = new SelectQueryExecutor(selectQuery);
-        selectQueryExecutor.execute();
+        selectQueryExecutor.execute(null);
     }
 
     @Test
@@ -136,7 +136,7 @@ public class QueryExecutorTest
 
         UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery)parser.parse(sql);
         UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-        useDatabaseQueryExecutor.execute();
+        useDatabaseQueryExecutor.execute(null);
         QueryExecutor queryExecutor = new QueryExecutor();
         queryExecutor.execute("start transaction; select * from employee; create table customer(id number, name varchar); commit;");
     }
@@ -150,7 +150,7 @@ public class QueryExecutorTest
 
         UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery)parser.parse(sql);
         UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-        useDatabaseQueryExecutor.execute();
+        useDatabaseQueryExecutor.execute(null);
         QueryExecutor queryExecutor = new QueryExecutor();
         queryExecutor.execute("start transaction; create table customer(id number, name varchar); create table customer(id number, name varchar); commit;");
     }
@@ -164,9 +164,9 @@ public class QueryExecutorTest
 
         UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery)parser.parse(sql);
         UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-        useDatabaseQueryExecutor.execute();
+        useDatabaseQueryExecutor.execute(null);
         QueryExecutor queryExecutor = new QueryExecutor();
-        queryExecutor.execute("start transaction; update persons set name=vipul where name=jeet; commit;");
+        queryExecutor.execute("start transaction; update persons set name=kinna where name=nihar; commit;");
     }
 
     @Test
@@ -178,9 +178,9 @@ public class QueryExecutorTest
 
         UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery)parser.parse(sql);
         UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-        useDatabaseQueryExecutor.execute();
+        useDatabaseQueryExecutor.execute(null);
         QueryExecutor queryExecutor = new QueryExecutor();
-        queryExecutor.execute("start transaction; insert into persons(id, name, lastname) values (7, jeet, patel); select * from persons where name=hetal; commit;");
+        queryExecutor.execute("start transaction; insert into persons(id, name, lastname) values (10, ms, dhoni); select * from persons where name=kinna; commit;");
 
     }
 
@@ -193,9 +193,9 @@ public class QueryExecutorTest
 
         UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery)parser.parse(sql);
         UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-        useDatabaseQueryExecutor.execute();
+        useDatabaseQueryExecutor.execute(null);
         QueryExecutor queryExecutor = new QueryExecutor();
-        queryExecutor.execute("start transaction;  insert into persons(id, name, lastname) values (8, hetal, patel); delete from persons where name=vipul; commit;");
+        queryExecutor.execute("start transaction;  insert into persons(id, name, lastname) values (8, vipul, patel); delete from persons where name=hetal; commit;");
 
     }
 }

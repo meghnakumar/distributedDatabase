@@ -4,10 +4,7 @@ import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class TableStructureHelper {
 

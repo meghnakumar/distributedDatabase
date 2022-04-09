@@ -1,11 +1,9 @@
 package com.csci5408.distributeddatabase.query.validator;
 
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
-import com.csci5408.distributeddatabase.query.CreateTableQuery;
 import com.csci5408.distributeddatabase.query.Query;
 import com.csci5408.distributeddatabase.query.UpdateQuery;
 import com.csci5408.distributeddatabase.queryexecutor.Transaction;
-import com.csci5408.distributeddatabase.queryexecutor.UpdateQueryExecutor;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 
 import java.util.Properties;
@@ -25,7 +23,7 @@ public class UpdateTableQueryValidator implements Validator {
             LocalMetaDataHandler localMetaDataHandler = new LocalMetaDataHandler();
             tableMetadataProp = localMetaDataHandler.getTableMetadataProp(databaseName, updateQuery.getTableName());
         } else {
-            tableMetadataProp = transaction.getTransactionalTable().get(updateQuery.getTableName());
+            tableMetadataProp = transaction.getTransactionalTableProp().get(updateQuery.getTableName());
             if (tableMetadataProp == null) {
                 throw new IllegalArgumentException("OOPS!! Table doesn't exists");
             }

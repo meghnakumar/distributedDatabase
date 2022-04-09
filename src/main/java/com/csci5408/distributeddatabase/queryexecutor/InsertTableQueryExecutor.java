@@ -17,7 +17,7 @@ public class InsertTableQueryExecutor implements IQueryExecutor
     }
 
     @Override
-    public boolean execute() throws Exception
+    public boolean execute(Transaction transaction) throws Exception
     {
         String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
         String tableName = insertQuery.getTableName();
@@ -29,29 +29,36 @@ public class InsertTableQueryExecutor implements IQueryExecutor
         }
 
         //step flush the data to the file
-        try
-        {
-            String tableFileName = QueryExecutorUtil.getTableFileName(chosenDatabaseName, tableName);
+        try {
+            if (transaction == null) {
+                String tableFileName = QueryExecutorUtil.getTableFileName(chosenDatabaseName, tableName);
 
-            //ToDo flush the insert data to the table
-            LinkedHashMap columnValueMap = insertQuery.getFieldValueMap();
-            Set<String> columnNames = columnValueMap.keySet();
-            ArrayList<String> columnValues = new ArrayList<String>();
+                //ToDo flush the insert data to the table
+                LinkedHashMap columnValueMap = insertQuery.getFieldValueMap();
+                Set<String> columnNames = columnValueMap.keySet();
+                ArrayList<String> columnValues = new ArrayList<String>();
 
-            for(String key : columnNames)
-            {
-                String columnValue = columnValueMap.get(key).toString();
-                columnValues.add(columnValue);
+                for (String key : columnNames) {
+                    String columnValue = columnValueMap.get(key).toString();
+                    columnValues.add(columnValue);
+                }
+
+                String newRow = String.join(QueryConstants.SEPARATOR_ROW_COLUMN, columnValues);
+                System.err.println("inserting new row into the table " + insertQuery.getTableName());
+                FileUtil.writeToExistingFile(tableFileName, newRow);
+            } else {
+                executeInsertInTransaction(transaction, insertQuery);
             }
-
-            String newRow = String.join(QueryConstants.SEPARATOR_ROW_COLUMN, columnValues);
-            System.err.println("inserting new row into the table "+insertQuery.getTableName());
-            FileUtil.writeToExistingFile(tableFileName, newRow);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
         return true;
+    }
+
+    private void executeInsertInTransaction(Transaction transaction, InsertQuery insertQuery) {
+        ArrayList<HashMap<String, String>> tableData = transaction.getTransactionalTableData().get(insertQuery.getTableName());
+        tableData.add(insertQuery.getFieldValueMap());
     }
 }

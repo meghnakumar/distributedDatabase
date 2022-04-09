@@ -9,7 +9,7 @@ public class CreateDatabaseQueryValidator implements Validator {
     @Override
     public void validate(Query query, Transaction transaction) {
         if (transaction != null) {
-            throw new IllegalArgumentException("Cannot user create database inside transaction query");
+            throw new IllegalArgumentException("Cannot use create database inside transaction query");
         }
         CreatDatabaseQuery dbQuery = (CreatDatabaseQuery) query;
         if (QueryExecutorUtil.isDatabaseExists(dbQuery.getDatabaseName())) {

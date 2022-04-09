@@ -22,7 +22,7 @@ public class DeleteQueryValidator implements Validator {
             LocalMetaDataHandler localMetaDataHandler = new LocalMetaDataHandler();
             tableMetadataProp = localMetaDataHandler.getTableMetadataProp(databaseName, deleteQuery.getTableName());
         } else {
-            tableMetadataProp = transaction.getTransactionalTable().get(deleteQuery.getTableName());
+            tableMetadataProp = transaction.getTransactionalTableProp().get(deleteQuery.getTableName());
             if (tableMetadataProp == null) {
                 throw new IllegalArgumentException("OOPS!! Table doesn't exists");
             }
