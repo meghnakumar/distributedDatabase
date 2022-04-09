@@ -35,10 +35,12 @@ public class CreateTableExecutor implements IQueryExecutor{
         DistributedHelper distributedHelper = new DistributedHelper();
         if(!distributedHelper.isDatabasePresentInLocalInstance(databaseName))
         {
+            System.err.println("routing to other instance");
             result.append(distributedHelper.executeQueryInOtherInstance(this.createTableQuery.getSql()));
             return result.toString();
         }
 
+        System.err.println("executing in current instance");
         String referenceTable="";
         String referenceTableField = "";
         String foreignKey="";
@@ -52,6 +54,7 @@ public class CreateTableExecutor implements IQueryExecutor{
         LinkedHashMap<String,String> columns = createTableQuery.getFieldMap();
         String path= System.getProperty("user.dir")+"\\";
         File file = new File(path+"\\"+databaseName+"\\"+tableName+".txt");
+        System.err.println("cretaing a new file for table "+ path+"\\"+databaseName+"\\"+tableName+".txt");
         if(!QueryExecutorUtil.isTableExistsInDatabase(databaseName,tableName)){
             localMetaDataHandler.makeMetadataForTable(databaseName,tableName);
             localMetaDataHandler.addMetadataForTable(databaseName,tableName,"primaryKey",primaryKey);
