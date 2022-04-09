@@ -1,6 +1,7 @@
 package com.csci5408.distributeddatabase;
 
 import com.csci5408.distributeddatabase.queryexecutor.*;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -10,6 +11,9 @@ import java.util.Scanner;
 public class DistributedDatabaseApplication
 {
 	public static void main(String[] args) throws Exception {
+
+		SpringApplication.run(DistributedDatabaseApplication.class);
+
 		Scanner sc = new Scanner(System.in);
 		boolean isLogged = true;
 		BufferedReader reader = new BufferedReader(
