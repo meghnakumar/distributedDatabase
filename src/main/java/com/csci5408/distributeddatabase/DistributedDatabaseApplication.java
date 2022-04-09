@@ -18,8 +18,8 @@ public class DistributedDatabaseApplication
 		boolean isLogged = true;
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(System.in));
-
-		if(isLogged){
+		while(true){
+			if(isLogged){
 			System.out.println("Please select one from below:::::::::::::");
 			System.out.println("1.Write Queries"+"\n"+
 					"2.Export"+"\n"+"3.Data Model"+"\n"+"4.Analytics");
@@ -31,5 +31,6 @@ public class DistributedDatabaseApplication
 				queryExecutor.executeQuery();
 				}
 			}
+		}
 	}
 }
