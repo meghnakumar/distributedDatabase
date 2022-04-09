@@ -56,7 +56,7 @@ public class QueryExecutorUtil
         return filePath;
     }
 
-    private static boolean isColumnInteger(String value)
+    public static boolean isColumnInteger(String value)
     {
         try
         {

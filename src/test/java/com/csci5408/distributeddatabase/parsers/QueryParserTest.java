@@ -2,6 +2,7 @@ package com.csci5408.distributeddatabase.parsers;
 
 import com.csci5408.distributeddatabase.query.InsertQuery;
 import com.csci5408.distributeddatabase.query.Query;
+import com.csci5408.distributeddatabase.query.SelectQuery;
 import com.csci5408.distributeddatabase.query.parsers.QueryParser;
 import org.junit.Test;
 
@@ -85,7 +86,8 @@ public class QueryParserTest {
         String sql = "select * from person where name=janvi;";
         QueryParser parser = new QueryParser();
         try {
-            Query query = parser.parse(sql);
+            SelectQuery query = (SelectQuery) parser.parse(sql);
+            System.err.println(query.getColumns());
             System.out.println(query);
         } catch (Exception e) {
             e.printStackTrace();
@@ -103,4 +105,17 @@ public class QueryParserTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testSelectAllQuery() {
+        String sql = "select * from person;";
+        QueryParser parser = new QueryParser();
+        try {
+            Query query = parser.parse(sql);
+            System.out.println(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
