@@ -4,15 +4,17 @@ import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.util.ReadMetaDataUtil;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.*;
 
 public class DataExport {
 
-    public void exportSQLDump(String database) throws Exception {
+    public String exportSQLDump(String database) throws Exception {
 
         String star = "*****************************";
         boolean directoryExists = FileUtil.createDirectory("sqldump");
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("sqldump/" + database + ".sql"));
+        String outputPath = "sqldump/" + database + ".sql";
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outputPath));
 
         String directoryPath = "LOCALMETADATA/" + database;
         File directory = new File(directoryPath);
@@ -28,13 +30,13 @@ public class DataExport {
             bufferedWriter.write(star);
             bufferedWriter.newLine();
 
-            String dropTableQuery = "DROP TABLE IF EXISTS ";
+            String dropTableQuery = "";
             String createTableQuery = "";
 
             for(File file: directory.listFiles()) {
 
                 String tableName = file.getName().replace(".properties", "");
-                dropTableQuery += tableName + ";";
+                dropTableQuery = "DROP TABLE IF EXISTS " + tableName + ";";
                 createTableQuery = "CREATE TABLE " + tableName + "(";
 
                 Map<String, String> tableContent = ReadMetaDataUtil.getMetadata(file);
@@ -69,7 +71,7 @@ public class DataExport {
                     bufferedWriter.newLine();
                 }
 
-                File tableData = new File(database+"/"+tableName);
+                File tableData = new File(database+"/"+tableName+".txt");
                 if(tableData.exists()) {
                     BufferedReader bufferedReader = new BufferedReader(new FileReader(tableData));
                     String line = "";
@@ -106,5 +108,6 @@ public class DataExport {
         }
 
         bufferedWriter.close();
+        return FileUtil.readFileData(Path.of(outputPath));
     }
 }

@@ -3,6 +3,8 @@ package com.csci5408.distributeddatabase.util;
 import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -24,6 +26,16 @@ public class FileUtil
 
     public static boolean createDirectory(String path) {
         return new File(path).mkdirs();
+    }
+
+    public static String readFileData(Path path) {
+        String fileContent = "";
+        try {
+            fileContent = Files.readString(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileContent;
     }
 
     public static boolean makeDirectory(String path)

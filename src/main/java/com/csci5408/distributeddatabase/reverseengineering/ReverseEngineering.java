@@ -4,17 +4,19 @@ import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.util.ReadMetaDataUtil;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.*;
 
 public class ReverseEngineering {
 
-    public void reverseEngineering(String databaseName) throws Exception {
+    public String reverseEngineering(String databaseName) throws Exception {
 
         String directoryPath = "LOCALMETADATA/" + databaseName;
         boolean directoryExists = FileUtil.createDirectory("ER");
         File directory = new File(directoryPath);
+        String outputPath = "ER/" + databaseName +"_Entity_Relationship.txt";
 
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("ER/" + databaseName +"_Entity_Relationship.txt"));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outputPath));
         if(directory.exists()) {
             for(File file: directory.listFiles()) {
 
@@ -84,12 +86,13 @@ public class ReverseEngineering {
 
                 bufferedWriter.write(singleTableEntityRelation);
                 bufferedWriter.newLine();
+
             }
         } else {
             throw new Exception("Database doesn't exist");
         }
-
         bufferedWriter.close();
+        return FileUtil.readFileData(Path.of(outputPath));
     }
 
     private String getRelationString(String primaryKey, String foreignKey, String foreignKeyTableName, String primaryKeyOfForeignKeyTable, String cardinality) {
