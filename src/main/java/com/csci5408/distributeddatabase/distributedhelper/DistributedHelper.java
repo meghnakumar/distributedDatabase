@@ -48,7 +48,7 @@ public class DistributedHelper
 
     public String executeQueryInOtherInstance(String query)
     {
-        String mapping = "redirectUpdateGlobalMetaDataProp";
+        String mapping = "executeQuery";
         MultiValueMap<String, String> parameterMap= new LinkedMultiValueMap<String, String>();
         parameterMap.add("query", query);
         return forwardRequestToOtherInstance(mapping, parameterMap).toString();
