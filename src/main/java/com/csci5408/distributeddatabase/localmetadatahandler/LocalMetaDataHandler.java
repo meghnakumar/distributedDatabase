@@ -46,12 +46,12 @@ public class LocalMetaDataHandler
         PropertyUtil.writeToPropFile(tablePropPath, propKey, propValue);
     }
 
-    private String getDatabaseMetadataFolderPath(String databaseName)
+    public static String getDatabaseMetadataFolderPath(String databaseName)
     {
         return LocalMetaDataConstants.LOCAL_METADATA_PATH + File.separator +databaseName;
     }
 
-    private String getTableMetadataFilePath(String databaseName, String tableName)
+    public String getTableMetadataFilePath(String databaseName, String tableName)
     {
         String path = getDatabaseMetadataFolderPath(databaseName)+ File.separator +tableName + ".properties";
         return path;

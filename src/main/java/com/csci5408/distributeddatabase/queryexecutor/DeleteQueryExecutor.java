@@ -25,8 +25,8 @@ public class DeleteQueryExecutor implements IQueryExecutor {
 
     @Override
     public boolean execute() throws Exception {
-        //String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
-        String chosenDatabaseName = "admin";
+        String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
+//        String chosenDatabaseName = "admin";
         tableName = deleteQuery.getTableName();
         whereColumn = deleteQuery.getCriteria().getLeftOperand();
         whereValue = deleteQuery.getCriteria().getRightOperand();

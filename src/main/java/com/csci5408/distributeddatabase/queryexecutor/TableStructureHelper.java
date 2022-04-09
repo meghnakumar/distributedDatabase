@@ -25,7 +25,7 @@ public class TableStructureHelper {
                 int columns = rowContent.length;
                 int i = 0;
                 while (i < columns) {
-                    columnsNames.add(rowContent[i]);
+                    columnsNames.add(rowContent[i].trim());
                     i++;
                 }
             } else {

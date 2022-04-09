@@ -1,6 +1,8 @@
 package com.csci5408.distributeddatabase.query.parsers;
 
 import com.csci5408.distributeddatabase.query.Query;
+import com.csci5408.distributeddatabase.query.validator.*;
+import com.csci5408.distributeddatabase.queryexecutor.Transaction;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,5 +50,40 @@ public class QueryParser {
                 throw new Exception("Oops!! Query Type is Invalid");
         }
         return parser.parse();
+    }
+
+    public void validateQuery(Query query, Transaction transaction) throws Exception {
+        switch (query.getQueryType()) {
+            case CREATE_DATABASE:
+                new CreateDatabaseQueryValidator().validate(query, transaction);
+                break;
+
+            case USE:
+                new UseDatabaseQueryValidator().validate(query,transaction);
+                break;
+
+            case CREATE_TABLE:
+                new CreateTableQueryValidator().validate(query, transaction);
+                break;
+
+            case INSERT:
+                new InsertQueryValidator().validate(query, transaction);
+                break;
+
+            case SELECT:
+                new SelectQueryValidator().validate(query, transaction);
+                break;
+
+            case UPDATE:
+                new UpdateTableQueryValidator().validate(query, transaction);
+                break;
+
+            case DELETE:
+                new DeleteQueryValidator().validate(query, transaction);
+                break;
+
+            default:
+                throw new Exception("Oops!! Query Type is Invalid");
+        }
     }
 }
