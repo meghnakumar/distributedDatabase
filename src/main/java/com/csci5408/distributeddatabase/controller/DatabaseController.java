@@ -51,7 +51,7 @@ public class DatabaseController
     @PostMapping("/updateGlobalMetaDataProp")
     public Properties redirectUpdateGlobalMetadataProp(@RequestParam  String propName, @RequestParam  String propValue)
     {
-        System.err.println("received value= "+propName+" _ "+propValue);
+        System.err.println("update global properties = "+propName+" _ "+propValue);
         GlobalMetadataHandler globalMetadataHandler = new GlobalMetadataHandler();
         globalMetadataHandler.writeToMetaData(propName, propValue);
         return globalMetadataHandler.getGlobalMetadataProperties();
@@ -60,6 +60,7 @@ public class DatabaseController
     @PostMapping("/executeQuery")
     public String executeQuery(@RequestParam String query)
     {
+        System.err.println("executing query "+ query);
         QueryExecutor queryExecutor = new QueryExecutor(query);
         return queryExecutor.executeQuery();
     }

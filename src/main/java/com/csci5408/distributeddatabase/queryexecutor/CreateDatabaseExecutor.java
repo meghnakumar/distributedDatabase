@@ -82,9 +82,11 @@ public class CreateDatabaseExecutor implements IQueryExecutor
                 FileUtil.makeDirectory(databaseName);
 
                 //update local global data prop
+                System.err.println("writing new database to local global metadata");
                 globalMetadataHandler.writeToMetaData(databaseName, GlobalMetadataConstants.INSTANCE_CURRENT);
 
                 //update other instance global metadata property
+                System.err.println("writing new database to other instance global metadata");
                 DistributedHelper distributedHelper = new DistributedHelper();
                 distributedHelper.updateGlobalMetadataPropInOtherInstance(databaseName, GlobalMetadataConstants.INSTANCE_OTHER);
 
