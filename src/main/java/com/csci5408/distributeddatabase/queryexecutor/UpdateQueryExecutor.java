@@ -1,5 +1,6 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
+import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.fileoperations.FileUtil;
 import com.csci5408.distributeddatabase.query.UpdateQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
@@ -22,9 +23,19 @@ public class UpdateQueryExecutor implements IQueryExecutor{
     }
 
     @Override
-    public boolean execute() throws Exception {
+    public String execute() throws Exception {
+
+        StringBuilder result = new StringBuilder();
         String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
         tableName = updateQuery.getTableName();
+
+        DistributedHelper distributedHelper = new DistributedHelper();
+        if(!distributedHelper.isDatabasePresentInLocalInstance(chosenDatabaseName))
+        {
+            result.append(distributedHelper.executeQueryInOtherInstance(this.updateQuery.getSql()));
+            return result.toString();
+        }
+
         column = updateQuery.getColumnName();
         updatedColumnValue = updateQuery.getUpdatedColumnValue();
         whereColumn = updateQuery.getCriteria().getLeftOperand();
@@ -52,11 +63,14 @@ public class UpdateQueryExecutor implements IQueryExecutor{
                 }
 
                 }
-            }
             FileUtil.writeTableHashMapToFile(tableData,System.getProperty("user.dir") + "\\" + chosenDatabaseName + "\\" + tableName + ".txt");
-            return true;
-
+            result.append("update changes happened successfully in table");
         }
-
+        else
+        {
+            result.append("Table does not exists in the instance");
+        }
+            return result.toString();
+        }
      }
 

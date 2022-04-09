@@ -1,5 +1,6 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
+import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
 import com.csci5408.distributeddatabase.query.CreateTableQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
@@ -26,9 +27,18 @@ public class CreateTableExecutor implements IQueryExecutor{
     }
 
     @Override
-    public boolean execute() throws IOException {
+    public String  execute() throws IOException {
+        StringBuilder result = new StringBuilder();
         String tableName = createTableQuery.getTableName();
         String primaryKey = createTableQuery.getPrimaryKey();
+
+        DistributedHelper distributedHelper = new DistributedHelper();
+        if(!distributedHelper.isDatabasePresentInLocalInstance(databaseName))
+        {
+            result.append(distributedHelper.executeQueryInOtherInstance(this.createTableQuery.getSql()));
+            return result.toString();
+        }
+
         String referenceTable="";
         String referenceTableField = "";
         String foreignKey="";
@@ -65,12 +75,12 @@ public class CreateTableExecutor implements IQueryExecutor{
             writeFile.newLine();
             writeFile.close();
 
-            return true;
-
+            result.append("Table created successfully content");
         }
         else{
+            result.append("table already exists cannot create the table");
             System.out.println("File already exists");
         }
-        return false;
+        return result.toString();
    }
 }

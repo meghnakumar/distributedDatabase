@@ -1,12 +1,9 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
 import com.csci5408.distributeddatabase.query.*;
-import com.csci5408.distributeddatabase.query.parsers.Parser;
 import com.csci5408.distributeddatabase.query.parsers.QueryParser;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 
-import static com.csci5408.distributeddatabase.query.QueryType.CREATE_DATABASE;
-import static com.csci5408.distributeddatabase.query.QueryType.CREATE_TABLE;
 
 public class QueryExecutor
 {

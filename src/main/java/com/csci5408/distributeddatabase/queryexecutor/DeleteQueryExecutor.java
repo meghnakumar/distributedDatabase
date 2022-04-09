@@ -1,5 +1,6 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
+import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.fileoperations.FileUtil;
 import com.csci5408.distributeddatabase.query.DeleteQuery;
 import com.csci5408.distributeddatabase.query.UpdateQuery;
@@ -24,10 +25,18 @@ public class DeleteQueryExecutor implements IQueryExecutor {
     }
 
     @Override
-    public boolean execute() throws Exception {
-        //String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
-        String chosenDatabaseName = "admin";
+    public String execute() throws Exception {
+        StringBuilder result = new StringBuilder();
+        String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
         tableName = deleteQuery.getTableName();
+
+        DistributedHelper distributedHelper = new DistributedHelper();
+        if(!distributedHelper.isDatabasePresentInLocalInstance(chosenDatabaseName))
+        {
+            result.append(distributedHelper.executeQueryInOtherInstance(this.deleteQuery.getSql()));
+            return result.toString();
+        }
+
         whereColumn = deleteQuery.getCriteria().getLeftOperand();
         whereValue = deleteQuery.getCriteria().getRightOperand();
         operator = deleteQuery.getCriteria().getOperator();
@@ -63,8 +72,10 @@ public class DeleteQueryExecutor implements IQueryExecutor {
                 }
 
             }
+            FileUtil.writeTableHashMapToFile(updatedTableData,System.getProperty("user.dir") + "\\" + chosenDatabaseName + "\\" + tableName + ".txt");
+            result.append("changes updated in table and flushed to file successfully");
         }
-        FileUtil.writeTableHashMapToFile(updatedTableData,System.getProperty("user.dir") + "\\" + chosenDatabaseName + "\\" + tableName + ".txt");
-        return true;
+        result.append("The table does not exist in this instance");
+        return result.toString();
     }
 }

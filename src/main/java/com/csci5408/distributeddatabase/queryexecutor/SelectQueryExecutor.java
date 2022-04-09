@@ -1,5 +1,6 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
+import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.query.SelectQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 
@@ -18,15 +19,22 @@ public class SelectQueryExecutor implements IQueryExecutor
     }
 
     @Override
-    public boolean execute() throws Exception
+    public String execute() throws Exception
     {
-        boolean result=true;
+        StringBuilder result = new StringBuilder();
+        String databaseName = QueryExecutorUtil.getChosenDatabase();
+        String tableName = selectQuery.getTableName();
+        DistributedHelper distributedHelper = new DistributedHelper();
+
+        if(!distributedHelper.isDatabasePresentInLocalInstance(databaseName))
+        {
+            result.append(distributedHelper.executeQueryInOtherInstance(this.selectQuery.getSql()));
+            return result.toString();
+        }
+
         try
         {
-            String databaseName = QueryExecutorUtil.getChosenDatabase();
-            String tableName = selectQuery.getTableName();
             List<String> columnsToDisplay = selectQuery.getColumns();
-
             ArrayList<HashMap<String, String>> tableMap = TableStructureHelper.getTableStructure(databaseName, tableName);
             boolean isHeaderRowDisplayed = false;
 
@@ -47,6 +55,7 @@ public class SelectQueryExecutor implements IQueryExecutor
                         }
                     }
                     System.out.println(line);
+                    result.append(line).append("\n");
                     line = new StringBuilder();
                     isHeaderRowDisplayed=true;
                 }
@@ -60,6 +69,7 @@ public class SelectQueryExecutor implements IQueryExecutor
                         if(columnsToDisplay.contains(trimmedColumn))
                         {
                             line.append(" ").append(row.get(column));
+                            result.append(line).append("\n");
                         }
                     }
                     System.out.println(line);
@@ -68,10 +78,11 @@ public class SelectQueryExecutor implements IQueryExecutor
         }
         catch (Exception ex)
         {
-            result=false;
+            result = new StringBuilder();
+            result.append("Exception occurred in query execution"+ex.getMessage());
             ex.printStackTrace();
         }
-        return result;
+        return result.toString();
     }
 
 }
