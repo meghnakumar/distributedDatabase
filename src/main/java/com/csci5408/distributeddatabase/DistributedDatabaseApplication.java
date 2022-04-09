@@ -28,7 +28,8 @@ public class DistributedDatabaseApplication
 				System.out.print("Please enter the query to execute:::::::");
 				String sql = reader.readLine();
 				QueryExecutor queryExecutor = new QueryExecutor(sql);
-				queryExecutor.executeQuery();
+				String response  = queryExecutor.executeQuery();
+				System.out.println("Result for the query "+sql+" is "+response);
 				}
 			}
 		}
