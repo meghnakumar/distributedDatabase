@@ -51,7 +51,7 @@ public class DistributedHelper
         String mapping = "executeQuery";
         MultiValueMap<String, String> parameterMap= new LinkedMultiValueMap<String, String>();
         parameterMap.add("query", query);
-        return forwardRequestToOtherInstance(mapping, parameterMap).toString();
+        return forwardRequestToOtherInstance(mapping, parameterMap).getBody();
     }
 
     private ResponseEntity<String> forwardRequestToOtherInstance(String mapping, MultiValueMap<String, String> parameterMap)

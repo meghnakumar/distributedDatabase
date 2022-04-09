@@ -18,26 +18,24 @@ public class QueryExecutor
     {
         try
         {
+            IQueryExecutor queryExecutor = null;
             QueryParser parser = new QueryParser();
             Query query = parser.parse(sqlQuery);
             switch(query.getQueryType()) {
                 case CREATE_DATABASE:
                     CreatDatabaseQuery creatDatabaseQuery = (CreatDatabaseQuery) query;
-                    CreateDatabaseExecutor createDatabaseExecutor = new CreateDatabaseExecutor(creatDatabaseQuery);
-                    createDatabaseExecutor.execute();
+                    queryExecutor = new CreateDatabaseExecutor(creatDatabaseQuery);
                     break;
                 case INSERT:
                     InsertQuery insertQuery = (InsertQuery) query;
-                    InsertTableQueryExecutor insertTableQueryExecutor = new InsertTableQueryExecutor(insertQuery);
-                    insertTableQueryExecutor.execute();
+                    queryExecutor = new InsertTableQueryExecutor(insertQuery);
                     break;
                 case CREATE_TABLE:
                     if (!QueryExecutorUtil.isDatabaseChosen())
                         return "No Database has been chosen please choose a database";
                     else {
                         CreateTableQuery createTableQuery = (CreateTableQuery) query;
-                        CreateTableExecutor createTableExecutor = new CreateTableExecutor(createTableQuery, QueryExecutorUtil.getChosenDatabase());
-                        createTableExecutor.execute();
+                        queryExecutor = new CreateTableExecutor(createTableQuery, QueryExecutorUtil.getChosenDatabase());
                     }
                     break;
                 case UPDATE:
@@ -45,8 +43,7 @@ public class QueryExecutor
                         return "No Database has been chosen please choose a database";
                     else{
                         UpdateQuery updateQuery = (UpdateQuery) query;
-                        UpdateQueryExecutor updateQueryExecutor = new UpdateQueryExecutor(updateQuery);
-                        updateQueryExecutor.execute();
+                        queryExecutor = new UpdateQueryExecutor(updateQuery);
                     }
                     break;
                 case DELETE:
@@ -54,8 +51,7 @@ public class QueryExecutor
                         return "No Database has been chosen please choose a database";
                     else{
                         DeleteQuery deleteQuery = (DeleteQuery) query;
-                        DeleteQueryExecutor deleteQueryExecutor = new DeleteQueryExecutor(deleteQuery);
-                        deleteQueryExecutor.execute();
+                        queryExecutor = new DeleteQueryExecutor(deleteQuery);
                     }
                     break;
                 case SELECT:
@@ -63,24 +59,23 @@ public class QueryExecutor
                         return "No Database has been chosen please choose a database";
                     else{
                         SelectQuery selectQuery = (SelectQuery) query;
-                        SelectQueryExecutor selectQueryExecutor = new SelectQueryExecutor(selectQuery);
-                        selectQueryExecutor.execute();
+                        queryExecutor = new SelectQueryExecutor(selectQuery);
                     }
                     break;
                 case USE:
                     UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery) query;
-                    UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-                    useDatabaseQueryExecutor.execute();
+                    queryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
                     break;
                 default:
                     System.err.println("You have entered an invalid query");
             }
+            return queryExecutor.execute();
         }
         catch (Exception ex)
         {
             ex.printStackTrace();
         }
-        return "";
+        return "returned after switch";
     }
 
     public String executeTransaction()
