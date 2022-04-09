@@ -15,7 +15,8 @@ public class TableStructureHelper {
         String line = "";
         ArrayList<HashMap> tableData = new ArrayList<>();
         int counter = 1;
-        File file = new File(System.getProperty("user.dir") + "\\" + databaseName + "\\" + tableName + ".txt");
+        String path= System.getProperty("user.dir")+ File.separator+databaseName+File.separator+tableName+".txt";
+        File file = new File(path);
         List<String> columnsNames = new ArrayList<>();
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
         while ((line = bufferedReader.readLine()) != null) {
