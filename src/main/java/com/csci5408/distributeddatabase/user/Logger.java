@@ -13,22 +13,6 @@ public class Logger {
     private static boolean eventD = false;
     private static boolean queryD = false;
 
-//  public static void main(String args[]) {
-//
-//    Logger logger = new Logger();
-//    logger.alllogFile();
-//  }
-
-//  Logger() {
-//      alllogFile();
-//    }
-
-//    public static Logger getInstance () {
-//      if (instance == null) {
-//        instance = new Logger();
-//      }
-//      return instance;
-//    }
 
     public static String generalLogfile = "GeneralLogs.txt";
     public static String eventLogfile = "EventLogs.txt";
