@@ -30,7 +30,7 @@ public class GlobalMetadataHandler
             FileOutputStream out = new FileOutputStream(GlobalMetadataConstants.GLOBAL_METADATA_FILE_PATH);
             if(!prop.containsKey("current_instance"))
             {
-                prop.setProperty("current_instance", "localhost");
+                prop.setProperty("current_instance", GlobalMetadataConstants.INSTANCE_CURRENT);
             }
             prop.store(out, null);
             out.close();

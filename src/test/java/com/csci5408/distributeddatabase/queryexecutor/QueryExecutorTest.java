@@ -113,7 +113,7 @@ public class QueryExecutorTest
         insertTableQueryExecutor.execute();
 
         //select table test
-        sql = "select id, name from persons where name=janvi;";
+        sql = "select * from persons where id=8;";
         parser = new QueryParser();
 
         SelectQuery selectQuery = (SelectQuery) parser.parse(sql);

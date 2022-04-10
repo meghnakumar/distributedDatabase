@@ -66,14 +66,14 @@ public class CreateDatabaseExecutor implements IQueryExecutor
     }
 
     @Override
-    public boolean execute()
+    public String execute()
     {
-        boolean result=true;
+        StringBuilder result = new StringBuilder();
         try
         {
             if(QueryExecutorUtil.isDatabaseExists(databaseName))
             {
-                result=false;
+                result.append("Database already exists");
                 System.err.println("Database already exists");
             }
             else
@@ -88,7 +88,7 @@ public class CreateDatabaseExecutor implements IQueryExecutor
                 //update other instance global metadata property
                 System.err.println("writing new database to other instance global metadata");
                 DistributedHelper distributedHelper = new DistributedHelper();
-                distributedHelper.updateGlobalMetadataPropInOtherInstance(databaseName, GlobalMetadataConstants.INSTANCE_OTHER);
+                result.append(distributedHelper.updateGlobalMetadataPropInOtherInstance(databaseName, GlobalMetadataConstants.INSTANCE_CURRENT));
 
                 //create local metadata for the database
                 localMetaDataHandler.makeMetadataForDatabase(databaseName);
@@ -96,9 +96,9 @@ public class CreateDatabaseExecutor implements IQueryExecutor
         }
         catch(Exception ex)
         {
-            result=false;
+            result.append(ex.getMessage());
             ex.printStackTrace();
         }
-        return result;
+        return result.toString();
     }
 }

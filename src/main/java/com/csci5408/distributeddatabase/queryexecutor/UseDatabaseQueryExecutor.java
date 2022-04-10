@@ -13,10 +13,10 @@ public class UseDatabaseQueryExecutor implements IQueryExecutor
     }
 
     @Override
-    public boolean execute() throws Exception
+    public String execute() throws Exception
     {
         System.setProperty(QueryConstants.PROPERTY_CURRENT_DATABASE, useDatabaseQuery.getDatabaseName());
         System.out.println(System.getProperties());
-        return true;
+        return System.getProperties().getProperty(QueryConstants.PROPERTY_CURRENT_DATABASE);
     }
 }
