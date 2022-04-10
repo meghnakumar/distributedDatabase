@@ -80,8 +80,8 @@ public class DatabaseController
     public String exportSQLDump(@RequestParam String databaseName) throws Exception
     {
         DataExport export = new DataExport();
-        export.exportSQLDump(databaseName);
-        return "";
+        String result = export.exportSQLDump(databaseName);
+        return result;
     }
 
     @PostMapping("/reverseEngineering")
