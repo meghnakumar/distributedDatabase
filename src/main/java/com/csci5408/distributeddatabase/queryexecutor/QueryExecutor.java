@@ -1,10 +1,10 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
-import com.csci5408.distributeddatabase.fileoperations.FileUtil;
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
 import com.csci5408.distributeddatabase.query.*;
 import com.csci5408.distributeddatabase.query.parsers.QueryParser;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
+import com.csci5408.distributeddatabase.util.FileUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -134,16 +134,20 @@ public class QueryExecutor {
 
     private boolean executeQueryForTransactions(Query query, Transaction transaction) throws Exception {
         if (query.getQueryType() == QueryType.CREATE_DATABASE) {
-             return new CreateDatabaseExecutor((CreatDatabaseQuery) query).execute();
+              new CreateDatabaseExecutor((CreatDatabaseQuery) query).execute();
+              return true;
         } else if (query.getQueryType() == QueryType.CREATE_TABLE) {
-            return new CreateTableExecutor((CreateTableQuery) query, QueryExecutorUtil.getChosenDatabase()).execute();
+            new CreateTableExecutor((CreateTableQuery) query, QueryExecutorUtil.getChosenDatabase()).execute();
+            return true;
         } else if (query.getQueryType() == QueryType.INSERT) {
             ITransactionExecutor transactionExecutor = new InsertTableQueryExecutor((InsertQuery) query);
             return transactionExecutor.executeTransaction(transaction);
         } else if (query.getQueryType() == QueryType.SELECT) {
-            return new SelectQueryExecutor((SelectQuery) query).execute();
+            new SelectQueryExecutor((SelectQuery) query).execute();
+            return true;
         } else if (query.getQueryType() == QueryType.USE) {
-            return new UseDatabaseQueryExecutor((UseDatabaseQuery) query).execute();
+            new UseDatabaseQueryExecutor((UseDatabaseQuery) query).execute();
+            return true;
         } else if (query.getQueryType() == QueryType.UPDATE) {
             ITransactionExecutor transactionExecutor = new UpdateQueryExecutor((UpdateQuery) query);
             return transactionExecutor.executeTransaction(transaction);
