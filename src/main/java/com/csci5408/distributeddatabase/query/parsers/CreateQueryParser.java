@@ -16,7 +16,7 @@ public class CreateQueryParser extends Parser {
     @Override
     public Query parse() throws Exception {
         if (sqlQueryParts.get(1).equalsIgnoreCase("database")) {
-            String databaseName = sqlQueryParts.get(2).replace(";", " ");
+            String databaseName = sqlQueryParts.get(2).substring(0,sqlQueryParts.get(2).length()-1);
             return new CreatDatabaseQuery(sqlQuery, databaseName);
         } else if (sqlQueryParts.get(1).equalsIgnoreCase("table")) {
             String tableName = sqlQueryParts.get(2);
