@@ -1,4 +1,4 @@
-package user;
+package com.csci5408.distributeddatabase.logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -8,31 +8,19 @@ import java.util.Date;
 
 public class Logger {
 
+
+
+    private static Logger instance = null;
     private static String lastdate = "";
     private static boolean generalD = false;
     private static boolean eventD = false;
     private static boolean queryD = false;
 
-//  public static void main(String args[]) {
-//
-//    Logger logger = new Logger();
-//    logger.alllogFile();
-//  }
-
-//  Logger() {
-//      alllogFile();
-//    }
-
-//    public static Logger getInstance () {
-//      if (instance == null) {
-//        instance = new Logger();
-//      }
-//      return instance;
-//    }
 
     public static String generalLogfile = "GeneralLogs.txt";
     public static String eventLogfile = "EventLogs.txt";
     public static String queryLogfile = "QueryLogs.txt";
+
     static FileWriter eventWriter;
     static FileWriter generalWriter;
     static FileWriter queryWriter;
@@ -60,7 +48,12 @@ public class Logger {
         if (eventLog.createNewFile()) {
           System.out.println("Event log generator");
         }
+
+
+
         eventWriter = new FileWriter(eventLog, true);
+
+
       } catch (Exception e) {
         return false;
       }
@@ -77,7 +70,7 @@ public class Logger {
       return lDate;
     }
 
-    
+
     public static void eventLogger(String input) throws IOException {
       File eventLog = new File(eventLogfile);
 
@@ -111,14 +104,14 @@ public class Logger {
       }
       generalWriter = new FileWriter(generalLog, true);
 //        generalD = true;
-      generalWriter.append(input);
       generalWriter.append(ldate);
+      generalWriter.append(input);
       generalWriter.flush();
       }
 
 
   public static void queryLogger(String input) throws IOException {
-        File queryLog = new File(queryLogfile);
+
         String ldate;
         ldate = getDate();
 
@@ -129,7 +122,6 @@ public class Logger {
         }
         lastdate = ldate;
         queryD = true;
-        queryWriter = new FileWriter(queryLog, true);
         queryWriter.append(ldate);
         queryWriter.append(input);
         queryWriter.flush();

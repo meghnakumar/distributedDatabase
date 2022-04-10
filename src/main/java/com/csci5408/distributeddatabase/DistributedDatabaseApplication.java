@@ -6,8 +6,8 @@ import com.csci5408.distributeddatabase.queryexecutor.*;
 import com.csci5408.distributeddatabase.reverseengineering.ReverseEngineering;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.*;
-import user.Login;
-import user.RegUser;
+import com.csci5408.distributeddatabase.user.Login;
+import com.csci5408.distributeddatabase.user.RegUser;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

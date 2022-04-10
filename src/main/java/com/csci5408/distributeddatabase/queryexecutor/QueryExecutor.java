@@ -6,7 +6,7 @@ import com.csci5408.distributeddatabase.query.*;
 import com.csci5408.distributeddatabase.query.parsers.QueryParser;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 import com.csci5408.distributeddatabase.util.FileUtil;
-import user.Logger;
+import com.csci5408.distributeddatabase.user.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;

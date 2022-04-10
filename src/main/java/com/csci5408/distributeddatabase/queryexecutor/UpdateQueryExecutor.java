@@ -4,7 +4,7 @@ import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.query.UpdateQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 import com.csci5408.distributeddatabase.util.FileUtil;
-import user.Logger;
+import com.csci5408.distributeddatabase.user.Logger;
 
 import java.io.File;
 import java.util.ArrayList;

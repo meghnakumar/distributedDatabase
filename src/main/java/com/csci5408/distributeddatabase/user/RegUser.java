@@ -1,4 +1,4 @@
-package user;
+package com.csci5408.distributeddatabase.user;
 
 import java.io.FileWriter;
 import java.io.IOException;

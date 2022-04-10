@@ -5,7 +5,7 @@ import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.query.InsertQuery;
 import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
-import user.Logger;
+import com.csci5408.distributeddatabase.user.Logger;
 
 import java.util.*;
 

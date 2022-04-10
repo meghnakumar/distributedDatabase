@@ -3,7 +3,7 @@ package com.csci5408.distributeddatabase.queryexecutor;
 import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.query.SelectQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
-import user.Logger;
+import com.csci5408.distributeddatabase.user.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;

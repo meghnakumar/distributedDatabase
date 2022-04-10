@@ -4,11 +4,10 @@ import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.query.DeleteQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
-import user.Logger;
+import com.csci5408.distributeddatabase.user.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class DeleteQueryExecutor implements IQueryExecutor, ITransactionExecutor {

@@ -4,7 +4,7 @@ import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
 import com.csci5408.distributeddatabase.query.CreateTableQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
-import user.Logger;
+import com.csci5408.distributeddatabase.user.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;

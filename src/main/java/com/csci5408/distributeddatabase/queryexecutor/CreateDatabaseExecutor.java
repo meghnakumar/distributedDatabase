@@ -7,7 +7,7 @@ import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataHand
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
 import com.csci5408.distributeddatabase.query.CreatDatabaseQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
-import user.Logger;
+import com.csci5408.distributeddatabase.user.Logger;
 
 public class CreateDatabaseExecutor implements IQueryExecutor
 {

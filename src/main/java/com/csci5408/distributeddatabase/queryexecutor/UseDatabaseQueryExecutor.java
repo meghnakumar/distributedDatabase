@@ -2,7 +2,7 @@ package com.csci5408.distributeddatabase.queryexecutor;
 
 import com.csci5408.distributeddatabase.query.UseDatabaseQuery;
 import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
-import user.Logger;
+import com.csci5408.distributeddatabase.user.Logger;
 
 public class UseDatabaseQueryExecutor implements IQueryExecutor
 {

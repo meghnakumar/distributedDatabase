@@ -3,7 +3,7 @@ package com.csci5408.distributeddatabase.query.parsers;
 import com.csci5408.distributeddatabase.query.Query;
 import com.csci5408.distributeddatabase.query.validator.*;
 import com.csci5408.distributeddatabase.queryexecutor.Transaction;
-import user.Logger;
+import com.csci5408.distributeddatabase.user.Logger;
 
 import java.util.Arrays;
 import java.util.List;
