@@ -148,7 +148,8 @@ public class QueryExecutor {
         }
         if(isQuerySuccessfullyExecuted) {
             for (Map.Entry<String, ArrayList> tableData : transaction.getTransactionalTableData().entrySet()) {
-                FileUtil.writeTableHashMapToFile(tableData.getValue(), System.getProperty("user.dir") + "\\" + transaction.getDatabaseName() + "\\" + tableData.getKey() + ".txt");
+                String Path = System.getProperty("user.dir") + File.separator + transaction.getDatabaseName() + File.separator + tableData.getKey() + ".txt";
+                FileUtil.writeTableHashMapToFile(tableData.getValue(), Path);
             }
         }
     }
