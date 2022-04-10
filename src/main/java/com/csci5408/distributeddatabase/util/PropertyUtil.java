@@ -1,11 +1,6 @@
 package com.csci5408.distributeddatabase.util;
 
-import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataHandler;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Properties;
 
 public class PropertyUtil
@@ -75,5 +70,31 @@ public class PropertyUtil
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static boolean flushPropToPropFile(Properties prop, String path)
+    {
+        try
+        {
+            //step 1 delete the file if already exists
+            //FileUtil.deleteAndCreateFileIfExists(path);
+            File propFile = new File(path);
+            if(propFile.exists())
+            {
+                propFile.delete();
+            }
+            propFile.createNewFile();
+
+            //step 2 flush property to file
+            OutputStream output = new FileOutputStream(path);
+            prop.store(output, null);
+            output.close();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            return false;
+        }
     }
 }

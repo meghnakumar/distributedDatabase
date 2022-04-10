@@ -1,5 +1,6 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
+import com.csci5408.distributeddatabase.analytics.AnalyticsUtil;
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
 import com.csci5408.distributeddatabase.query.*;
 import com.csci5408.distributeddatabase.query.parsers.QueryParser;
@@ -15,7 +16,7 @@ import java.util.*;
 public class QueryExecutor {
     // query parser
     private QueryParser queryParser;
-
+    private AnalyticsUtil analyticsUtil;
     private String sqlQuery;
 
     public QueryExecutor() {
@@ -24,6 +25,7 @@ public class QueryExecutor {
     // constructor
     public QueryExecutor(String sqlQuery) {
         this.sqlQuery = sqlQuery;
+        this.analyticsUtil=new AnalyticsUtil();
     }
 
     public String executeQuery()
@@ -38,10 +40,13 @@ public class QueryExecutor {
                 case CREATE_DATABASE:
                     CreatDatabaseQuery creatDatabaseQuery = (CreatDatabaseQuery) query;
                     queryExecutor = new CreateDatabaseExecutor(creatDatabaseQuery);
+                    this.analyticsUtil.addAnalytics(creatDatabaseQuery);
                     break;
                 case INSERT:
                     InsertQuery insertQuery = (InsertQuery) query;
                     queryExecutor = new InsertTableQueryExecutor(insertQuery);
+
+                    this.analyticsUtil.addAnalytics(insertQuery);
                     break;
                 case CREATE_TABLE:
                     if (!QueryExecutorUtil.isDatabaseChosen())
@@ -49,6 +54,8 @@ public class QueryExecutor {
                     else {
                         CreateTableQuery createTableQuery = (CreateTableQuery) query;
                         queryExecutor = new CreateTableExecutor(createTableQuery, QueryExecutorUtil.getChosenDatabase());
+
+                        this.analyticsUtil.addAnalytics(createTableQuery);
                     }
                     break;
                 case UPDATE:
@@ -57,6 +64,8 @@ public class QueryExecutor {
                     else{
                         UpdateQuery updateQuery = (UpdateQuery) query;
                         queryExecutor = new UpdateQueryExecutor(updateQuery);
+
+                        this.analyticsUtil.addAnalytics(updateQuery);
                     }
                     break;
                 case DELETE:
@@ -65,6 +74,8 @@ public class QueryExecutor {
                     else{
                         DeleteQuery deleteQuery = (DeleteQuery) query;
                         queryExecutor = new DeleteQueryExecutor(deleteQuery);
+
+                        this.analyticsUtil.addAnalytics(deleteQuery);
                     }
                     break;
                 case SELECT:
@@ -73,11 +84,15 @@ public class QueryExecutor {
                     else{
                         SelectQuery selectQuery = (SelectQuery) query;
                         queryExecutor = new SelectQueryExecutor(selectQuery);
+
+                        this.analyticsUtil.addAnalytics(selectQuery);
                     }
                     break;
                 case USE:
                     UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery) query;
                     queryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
+
+                    this.analyticsUtil.addAnalytics(useDatabaseQuery);
                     break;
                 default:
                     Logger.eventLogger(query+" "+"QUERY FAILED");
