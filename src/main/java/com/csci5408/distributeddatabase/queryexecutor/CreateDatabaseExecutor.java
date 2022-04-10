@@ -87,8 +87,8 @@ public class CreateDatabaseExecutor implements IQueryExecutor
 
                 //update other instance global metadata property
                 System.err.println("writing new database to other instance global metadata");
-                /*DistributedHelper distributedHelper = new DistributedHelper();
-                result.append(distributedHelper.updateGlobalMetadataPropInOtherInstance(databaseName, GlobalMetadataConstants.INSTANCE_CURRENT));*/
+                DistributedHelper distributedHelper = new DistributedHelper();
+                result.append(distributedHelper.updateGlobalMetadataPropInOtherInstance(databaseName, GlobalMetadataConstants.INSTANCE_CURRENT));
                 //create local metadata for the database
                 localMetaDataHandler.makeMetadataForDatabase(databaseName);
             }

@@ -33,14 +33,14 @@ public class CreateTableExecutor implements IQueryExecutor{
         String tableName = createTableQuery.getTableName();
         String primaryKey = createTableQuery.getPrimaryKey();
 
-        /*DistributedHelper distributedHelper = new DistributedHelper();
+        DistributedHelper distributedHelper = new DistributedHelper();
         if(!distributedHelper.isDatabasePresentInLocalInstance(databaseName))
         {
             System.err.println("routing to other instance");
             result.append(distributedHelper.executeQueryInOtherInstance(this.createTableQuery.getSql()));
             return result.toString();
         }
-*/
+
         System.err.println("executing in current instance");
         String referenceTable="";
         String referenceTableField = "";
