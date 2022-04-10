@@ -37,6 +37,7 @@ public class DistributedHelper
     {
         GlobalMetadataHandler globalMetadataHandler = new GlobalMetadataHandler();
         Properties prop = globalMetadataHandler.getGlobalMetadataProperties();
+        System.err.println("global metadata prop is "+prop);
 
         if(prop.containsKey(databaseName))
         {

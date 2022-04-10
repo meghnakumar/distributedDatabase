@@ -115,7 +115,7 @@ public class QueryExecutor {
         String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
         DistributedHelper distributedHelper = new DistributedHelper();
 
-        if(!distributedHelper.isDatabasePresentInOtherInstance(chosenDatabaseName))
+        if(distributedHelper.isDatabasePresentInOtherInstance(chosenDatabaseName))
         {
             System.err.println("routing transaction to other instance as db is present there");
             return distributedHelper.executeTransactionInOtherInstance(chosenDatabaseName);
