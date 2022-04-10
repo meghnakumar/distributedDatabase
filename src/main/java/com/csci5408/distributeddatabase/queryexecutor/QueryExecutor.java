@@ -32,10 +32,10 @@ public class QueryExecutor {
     {
         try
         {
+            long startTime = System.currentTimeMillis();
             IQueryExecutor queryExecutor = null;
             QueryParser parser = new QueryParser();
             Query query = parser.parse(sqlQuery);
-            //parser.validateQuery(query,null);
             switch (query.getQueryType()) {
                 case CREATE_DATABASE:
                     CreatDatabaseQuery creatDatabaseQuery = (CreatDatabaseQuery) query;
@@ -98,6 +98,8 @@ public class QueryExecutor {
                     Logger.eventLogger(query+" "+"QUERY FAILED");
                     System.err.println("You have entered an invalid query");
             }
+            long executionTime = System.currentTimeMillis()-startTime;
+            Logger.generalLogger("Execution time for query "+query+"is"+executionTime);
             return queryExecutor.execute();
         }
         catch (Exception ex) {
