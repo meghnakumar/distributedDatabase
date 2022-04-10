@@ -1,5 +1,6 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
+import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
 import com.csci5408.distributeddatabase.query.CreateTableQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
@@ -26,9 +27,20 @@ public class CreateTableExecutor implements IQueryExecutor{
     }
 
     @Override
-    public boolean execute() throws IOException {
+    public String  execute() throws IOException {
+        StringBuilder result = new StringBuilder();
         String tableName = createTableQuery.getTableName();
         String primaryKey = createTableQuery.getPrimaryKey();
+
+        DistributedHelper distributedHelper = new DistributedHelper();
+        if(!distributedHelper.isDatabasePresentInLocalInstance(databaseName))
+        {
+            System.err.println("routing to other instance");
+            result.append(distributedHelper.executeQueryInOtherInstance(this.createTableQuery.getSql()));
+            return result.toString();
+        }
+
+        System.err.println("executing in current instance");
         String referenceTable="";
         String referenceTableField = "";
         String foreignKey="";
@@ -40,8 +52,11 @@ public class CreateTableExecutor implements IQueryExecutor{
              referenceTableField = createTableQuery.getReferenceTableField();
         }
         LinkedHashMap<String,String> columns = createTableQuery.getFieldMap();
-        String path= System.getProperty("user.dir")+"\\";
-        File file = new File(path+"\\"+databaseName+"\\"+tableName+".txt");
+
+        String path= System.getProperty("user.dir")+File.separator+databaseName+File.separator+tableName+".txt";
+        File file = new File(path);
+        System.err.println("creting a new file for table "+ path);
+
         if(!QueryExecutorUtil.isTableExistsInDatabase(databaseName,tableName)){
             localMetaDataHandler.makeMetadataForTable(databaseName,tableName);
             localMetaDataHandler.addMetadataForTable(databaseName,tableName,"primaryKey",primaryKey);
@@ -65,12 +80,12 @@ public class CreateTableExecutor implements IQueryExecutor{
             writeFile.newLine();
             writeFile.close();
 
-            return true;
-
+            result.append("Table created successfully content");
         }
         else{
+            result.append("table already exists cannot create the table");
             System.out.println("File already exists");
         }
-        return false;
+        return result.toString();
    }
 }

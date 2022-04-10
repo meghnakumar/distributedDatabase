@@ -1,5 +1,7 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
+import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
+import com.csci5408.distributeddatabase.fileoperations.FileUtil;
 import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.query.InsertQuery;
 import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
@@ -17,10 +19,18 @@ public class InsertTableQueryExecutor implements IQueryExecutor, ITransactionExe
     }
 
     @Override
-    public boolean execute() throws Exception
+    public String execute() throws Exception
     {
+        StringBuilder result = new StringBuilder();
         String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
         String tableName = insertQuery.getTableName();
+        DistributedHelper distributedHelper = new DistributedHelper();
+
+        if(!distributedHelper.isDatabasePresentInLocalInstance(chosenDatabaseName))
+        {
+            result.append(distributedHelper.executeQueryInOtherInstance(this.insertQuery.getSql()));
+            return result.toString();
+        }
 
         //Step 1 check if the table exists to insert the data
         if(!QueryExecutorUtil.isTableExistsInDatabase(chosenDatabaseName, tableName))
@@ -49,7 +59,7 @@ public class InsertTableQueryExecutor implements IQueryExecutor, ITransactionExe
         {
             e.printStackTrace();
         }
-        return true;
+        return result.toString();
     }
 
     @Override

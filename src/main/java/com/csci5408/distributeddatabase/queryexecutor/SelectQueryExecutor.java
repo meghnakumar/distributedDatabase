@@ -1,5 +1,6 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
+import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.query.SelectQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 
@@ -16,11 +17,23 @@ public class SelectQueryExecutor implements IQueryExecutor {
     }
 
     @Override
-    public boolean execute() throws Exception {
-        boolean result = true;
-        try {
-            String databaseName = QueryExecutorUtil.getChosenDatabase();
-            String tableName = selectQuery.getTableName();
+    public String execute() throws Exception
+    {
+        StringBuilder result = new StringBuilder();
+        String databaseName = QueryExecutorUtil.getChosenDatabase();
+        String tableName = selectQuery.getTableName();
+        DistributedHelper distributedHelper = new DistributedHelper();
+
+        System.err.println("select queru criteria = "+selectQuery.getCriteria());
+
+        if(!distributedHelper.isDatabasePresentInLocalInstance(databaseName))
+        {
+            result.append(distributedHelper.executeQueryInOtherInstance(this.selectQuery.getSql()));
+            return result.toString();
+        }
+
+        try
+        {
             List<String> columnsToDisplay = selectQuery.getColumns();
             boolean displayAllColumns = "*".equals(columnsToDisplay.get(0).trim());
 
@@ -40,26 +53,33 @@ public class SelectQueryExecutor implements IQueryExecutor {
                         }
                     }
                     System.out.println(line);
+                    result.append(line).append("\n");
                     line = new StringBuilder();
                     isHeaderRowDisplayed = true;
                 }
 
                 //display all the rows present in the table
-                if (QueryExecutorUtil.checkCriteriaForRow(row, selectQuery.getCriteria())) {
-                    for (String column : columns) {
+                if( selectQuery.getCriteria()==null || (selectQuery.getCriteria()!=null && QueryExecutorUtil.checkCriteriaForRow(row, selectQuery.getCriteria())))
+                {
+                    for(String column: columns)
+                    {
                         String trimmedColumn = column.trim();
                         if (displayAllColumns || columnsToDisplay.contains(trimmedColumn)) {
                             line.append(" ").append(row.get(column));
+                            result.append(line).append("\n");
                         }
                     }
                     System.out.println(line);
                 }
             }
-        } catch (Exception ex) {
-            result = false;
+        }
+        catch (Exception ex)
+        {
+            result = new StringBuilder();
+            result.append("Exception occurred in query execution"+ex.getMessage());
             ex.printStackTrace();
         }
-        return result;
+        return result.toString();
     }
 
 }

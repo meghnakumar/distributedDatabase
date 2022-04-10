@@ -25,69 +25,67 @@ public class QueryExecutor {
         this.sqlQuery = sqlQuery;
     }
 
-    public String executeQuery() {
-        try {
+    public String executeQuery()
+    {
+        try
+        {
+            IQueryExecutor queryExecutor = null;
             QueryParser parser = new QueryParser();
             Query query = parser.parse(sqlQuery);
             switch (query.getQueryType()) {
                 case CREATE_DATABASE:
                     CreatDatabaseQuery creatDatabaseQuery = (CreatDatabaseQuery) query;
-                    CreateDatabaseExecutor createDatabaseExecutor = new CreateDatabaseExecutor(creatDatabaseQuery);
-                    createDatabaseExecutor.execute();
+                    queryExecutor = new CreateDatabaseExecutor(creatDatabaseQuery);
                     break;
                 case INSERT:
                     InsertQuery insertQuery = (InsertQuery) query;
-                    InsertTableQueryExecutor insertTableQueryExecutor = new InsertTableQueryExecutor(insertQuery);
-                    insertTableQueryExecutor.execute();
+                    queryExecutor = new InsertTableQueryExecutor(insertQuery);
                     break;
                 case CREATE_TABLE:
                     if (!QueryExecutorUtil.isDatabaseChosen())
                         return "No Database has been chosen please choose a database";
                     else {
                         CreateTableQuery createTableQuery = (CreateTableQuery) query;
-                        CreateTableExecutor createTableExecutor = new CreateTableExecutor(createTableQuery, QueryExecutorUtil.getChosenDatabase());
-                        createTableExecutor.execute();
+                        queryExecutor = new CreateTableExecutor(createTableQuery, QueryExecutorUtil.getChosenDatabase());
                     }
                     break;
                 case UPDATE:
                     if (!QueryExecutorUtil.isDatabaseChosen())
                         return "No Database has been chosen please choose a database";
-                    else {
+                    else{
                         UpdateQuery updateQuery = (UpdateQuery) query;
-                        UpdateQueryExecutor updateQueryExecutor = new UpdateQueryExecutor(updateQuery);
-                        updateQueryExecutor.execute();
+                        queryExecutor = new UpdateQueryExecutor(updateQuery);
                     }
                     break;
                 case DELETE:
                     if (!QueryExecutorUtil.isDatabaseChosen())
                         return "No Database has been chosen please choose a database";
-                    else {
+                    else{
                         DeleteQuery deleteQuery = (DeleteQuery) query;
-                        DeleteQueryExecutor deleteQueryExecutor = new DeleteQueryExecutor(deleteQuery);
-                        deleteQueryExecutor.execute();
+                        queryExecutor = new DeleteQueryExecutor(deleteQuery);
                     }
                     break;
                 case SELECT:
                     if (!QueryExecutorUtil.isDatabaseChosen())
                         return "No Database has been chosen please choose a database";
-                    else {
+                    else{
                         SelectQuery selectQuery = (SelectQuery) query;
-                        SelectQueryExecutor selectQueryExecutor = new SelectQueryExecutor(selectQuery);
-                        selectQueryExecutor.execute();
+                        queryExecutor = new SelectQueryExecutor(selectQuery);
                     }
                     break;
                 case USE:
                     UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery) query;
-                    UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-                    useDatabaseQueryExecutor.execute();
+                    queryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
                     break;
                 default:
                     System.err.println("You have entered an invalid query");
             }
-        } catch (Exception ex) {
+            return queryExecutor.execute();
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
         }
-        return "";
+        return "returned after switch";
     }
 
     public void executeTransaction(String transactionQuery) throws Exception

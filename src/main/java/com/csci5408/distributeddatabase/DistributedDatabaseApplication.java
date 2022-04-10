@@ -1,21 +1,24 @@
 package com.csci5408.distributeddatabase;
 
 import com.csci5408.distributeddatabase.queryexecutor.*;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
 @SpringBootApplication
-public class DistributedDatabaseApplication
-{
+public class DistributedDatabaseApplication {
 	public static void main(String[] args) throws Exception {
+
+		SpringApplication.run(DistributedDatabaseApplication.class);
+
 		Scanner sc = new Scanner(System.in);
 		boolean isLogged = true;
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(System.in));
 
-		if(isLogged) {
+		if (isLogged) {
 			while (true) {
 				System.out.println("Please select one from below:::::::::::::");
 				System.out.println("1.Write Normal Queries" + "\n" +
@@ -37,10 +40,10 @@ public class DistributedDatabaseApplication
 						System.err.println("Cannot commit transaction: " + exception.getMessage());
 					}
 				}
-				if(operation == 6) {
+				if (operation == 6) {
 					System.exit(0);
 				}
 			}
 		}
-	}
+		}
 }

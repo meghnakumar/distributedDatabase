@@ -27,6 +27,8 @@ public class DistributedHelper
         if(prop.containsKey(databaseName))
         {
             String databaseInstanceIp = prop.getProperty(databaseName);
+            System.err.println("current instance IP="+currentInstanceIP+" database ip= "+databaseInstanceIp);
+            System.err.println("Is database present in current instance = "+ currentInstanceIP.equals(databaseInstanceIp));
             return currentInstanceIP.equals(databaseInstanceIp);
         }
         else
@@ -46,10 +48,10 @@ public class DistributedHelper
 
     public String executeQueryInOtherInstance(String query)
     {
-        String mapping = "redirectUpdateGlobalMetaDataProp";
+        String mapping = "executeQuery";
         MultiValueMap<String, String> parameterMap= new LinkedMultiValueMap<String, String>();
         parameterMap.add("query", query);
-        return forwardRequestToOtherInstance(mapping, parameterMap).toString();
+        return forwardRequestToOtherInstance(mapping, parameterMap).getBody();
     }
 
     private ResponseEntity<String> forwardRequestToOtherInstance(String mapping, MultiValueMap<String, String> parameterMap)

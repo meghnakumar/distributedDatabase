@@ -46,7 +46,7 @@ public class QueryParserTest {
 
     @Test
     public void testInsertQuery() {
-        String sql = "insert into persons(name, lastname) values (janvi, patel);";
+        String sql = "insert into persons(id, name) values (1, janvi);";
         QueryParser parser = new QueryParser();
         try {
             InsertQuery query = (InsertQuery)parser.parse(sql);

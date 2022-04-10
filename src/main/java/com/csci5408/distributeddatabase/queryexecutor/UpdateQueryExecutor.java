@@ -1,12 +1,14 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
-import com.csci5408.distributeddatabase.util.FileUtil;
+import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
+import com.csci5408.distributeddatabase.fileoperations.FileUtil;
 import com.csci5408.distributeddatabase.query.UpdateQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
+import com.csci5408.distributeddatabase.util.FileUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 public class UpdateQueryExecutor implements IQueryExecutor, ITransactionExecutor {
 
@@ -30,18 +32,32 @@ public class UpdateQueryExecutor implements IQueryExecutor, ITransactionExecutor
     }
 
     @Override
-    public boolean execute() throws Exception
-    {
+    public String execute() throws Exception {
+
+        StringBuilder result = new StringBuilder();
         String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
+        tableName = updateQuery.getTableName();
+
+        DistributedHelper distributedHelper = new DistributedHelper();
+        if(!distributedHelper.isDatabasePresentInLocalInstance(chosenDatabaseName))
+        {
+            result.append(distributedHelper.executeQueryInOtherInstance(this.updateQuery.getSql()));
+            return result.toString();
+        }
 
         if (QueryExecutorUtil.isTableExistsInDatabase(chosenDatabaseName, tableName))
         {
             tableData = TableStructureHelper.getTableStructure(chosenDatabaseName, tableName);
             updateQueryOnDataStructure();
-            FileUtil.writeTableHashMapToFile(tableData, System.getProperty("user.dir") + "\\" + chosenDatabaseName + "\\" + tableName + ".txt");
-            return true;
+            String path= System.getProperty("user.dir")+ File.separator+chosenDatabaseName+File.separator+tableName+".txt";
+            FileUtil.writeTableHashMapToFile(tableData, path);
+            result.append("update changes happened successfully in table");
         }
-        return false;
+        else
+        {
+            result.append("Table does not exists in the instance");
+        }
+        return result.toString();
     }
 
     private void updateQueryOnDataStructure()
