@@ -192,7 +192,9 @@ public class QueryExecutor {
         for (File list : fileList) {
             Properties properties = new Properties();
             properties.load(new FileInputStream(list));
+            System.out.println("printing list of files of table::::::::::::::"+list.getName());
             tableName = list.getName().replace("properties", "").replace(".", "");
+            System.out.println("printing name of file::::::::::::::"+tableName);
             prop.put(tableName, properties);
             ArrayList tableStructure = TableStructureHelper.getTableStructure(transaction.getDatabaseName(), tableName);
             tableData.put(tableName, tableStructure);
