@@ -1,6 +1,7 @@
 package com.csci5408.distributeddatabase.dataexport;
 
 import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
+import com.csci5408.distributeddatabase.user.Logger;
 import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.util.ReadMetaDataUtil;
 
@@ -112,9 +113,13 @@ public class DataExport {
                     bufferedWriter.newLine();
                 }
             }
+        } else {
+            Logger.generalLogger("* Couldn't Generate Dump *");
+            throw new Exception("Database doesn't exist");
         }
 
         bufferedWriter.close();
+        Logger.generalLogger("::::::::::::::::SQL Dump Generated::::::::::::::::::::");
         return FileUtil.readFileData(Path.of(outputPath));
     }
 }

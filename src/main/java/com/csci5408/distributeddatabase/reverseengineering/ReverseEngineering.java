@@ -1,6 +1,7 @@
 package com.csci5408.distributeddatabase.reverseengineering;
 
 import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
+import com.csci5408.distributeddatabase.user.Logger;
 import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.util.ReadMetaDataUtil;
 
@@ -12,11 +13,11 @@ public class ReverseEngineering {
 
     public String reverseEngineering(String databaseName) throws Exception {
 
-        DistributedHelper distributedHelper = new DistributedHelper();
+        /*DistributedHelper distributedHelper = new DistributedHelper();
         if(!distributedHelper.isDatabasePresentInLocalInstance(databaseName))
         {
             return distributedHelper.executeReverseEngineeringInOtherInstance(databaseName);
-        }
+        }*/
 
         String directoryPath = "LOCALMETADATA/" + databaseName;
         boolean directoryExists = FileUtil.createDirectory("ER");
@@ -67,7 +68,7 @@ public class ReverseEngineering {
                         if(firstLine) {
                             String[] coulmnNames = line.split("\\*\\|\\*\\|");
                             for(String columnName: coulmnNames) {
-                                String column = columnName.substring(0, columnName.length()-1);
+                                String column = (columnName.equals(foreignKey)) ? columnName : columnName.substring(0, columnName.length()-1);
                                 if(column.equals(foreignKey)) {
                                     fkPositionFound = true;
                                 } else if (!(column.equals(foreignKey)) && !fkPositionFound) {
@@ -96,9 +97,11 @@ public class ReverseEngineering {
 
             }
         } else {
+            Logger.generalLogger("* Couldn't Generate Entity Relationship *");
             throw new Exception("Database doesn't exist");
         }
         bufferedWriter.close();
+        Logger.generalLogger("::::::::::::::::Entity Relationship Generated::::::::::::::::::::");
         return FileUtil.readFileData(Path.of(outputPath));
     }
 
