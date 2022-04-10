@@ -72,8 +72,7 @@ public class DatabaseController
     {
         System.err.println("executing transaction for other instance"+ transactionQuery);
         QueryExecutor queryExecutor = new QueryExecutor(transactionQuery);
-        queryExecutor.executeTransaction(transactionQuery);
-        return queryExecutor.executeQuery();
+        return queryExecutor.executeTransaction(transactionQuery);
     }
 
     @PostMapping("/exportDump")

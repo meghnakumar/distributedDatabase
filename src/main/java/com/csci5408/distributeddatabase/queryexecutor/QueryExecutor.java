@@ -105,10 +105,10 @@ public class QueryExecutor {
         catch (Exception ex) {
             ex.printStackTrace();
         }
-        return "returned after switch";
+        return "returned after executing normal query";
     }
 
-    public void executeTransaction(String transactionQuery) throws Exception
+    public String executeTransaction(String transactionQuery) throws Exception
     {
         queryParser = new QueryParser();
         // splitting the query on the basis of ';'
@@ -134,9 +134,9 @@ public class QueryExecutor {
         IQueryExecutor executor = null;
         transaction.setDatabaseName(QueryExecutorUtil.getChosenDatabase());
         initializeTableInTransaction(transaction);
-        /*for (Query query : queries) {
-            queryParser.validateQuery(query, transaction);
-        }*/
+//        for (Query query : queries) {
+//            queryParser.validateQuery(query, transaction);
+//        }
 
         boolean isQuerySuccessfullyExecuted=false;
         for (Query query : queries)
@@ -152,6 +152,7 @@ public class QueryExecutor {
                 FileUtil.writeTableHashMapToFile(tableData.getValue(), Path);
             }
         }
+        return "returned after executing transaction query";
     }
 
     private boolean executeQueryForTransactions(Query query, Transaction transaction) throws Exception {
