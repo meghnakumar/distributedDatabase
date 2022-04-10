@@ -89,12 +89,13 @@ public class DataExport {
                     String data = "";
                     while((line = bufferedReader.readLine()) != null) {
 
+                        String columns = line.replace("*|*|", ", ");
+                        int columnLength = columns.length();
+                        String columnData = (columns.endsWith(", ") ? columns.substring(0, columnLength - 2) : columns);
                         if(!firstLine) {
-                            data += "(" + line.replace("*|*|", ", ") + "),";
+                            data += "(" + columnData + "),";
                         } else {
-                            String columns = line.replace("*|*|", ", ");
-                            int columnLength = columns.length();
-                            insertQuery += (columns.endsWith(", ") ? columns.substring(0, columnLength - 2) : columns) + ") VALUES ";
+                            insertQuery += columnData + ") VALUES ";
                             firstLine = false;
                         }
                     }
