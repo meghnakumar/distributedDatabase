@@ -103,6 +103,12 @@ public class FileUtil
                 String line = new String();
                 Set<String> columns = row.keySet();
 
+                //trim any empty spaces present in the column names
+                columns.forEach(item->{
+                    item = item.trim();
+                });
+                System.err.println("Columns are trimming the space is"+columns);
+
                 //create header row for the table if not done before
                 if(!isHeaderRowCreated)
                 {
