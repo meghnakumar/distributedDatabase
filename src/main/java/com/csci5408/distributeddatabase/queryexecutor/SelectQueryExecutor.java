@@ -67,9 +67,9 @@ public class SelectQueryExecutor implements IQueryExecutor {
                         String trimmedColumn = column.trim();
                         if (displayAllColumns || columnsToDisplay.contains(trimmedColumn)) {
                             line.append(" ").append(row.get(column));
-                            result.append(line).append("\n");
                         }
                     }
+                    result.append("\n"+line);
                     System.out.println(line);
                 }
             }

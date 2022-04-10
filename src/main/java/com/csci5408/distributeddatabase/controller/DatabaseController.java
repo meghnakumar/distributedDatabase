@@ -80,8 +80,8 @@ public class DatabaseController
     public String exportSQLDump(@RequestParam String databaseName) throws Exception
     {
         DataExport export = new DataExport();
-        export.exportSQLDump(databaseName);
-        return "";
+        String result = export.exportSQLDump(databaseName);
+        return result;
     }
 
     @PostMapping("/reverseEngineering")
@@ -89,8 +89,16 @@ public class DatabaseController
     {
         //ToDo changes for reverse engineering
         ReverseEngineering reverseEngineering = new ReverseEngineering();
-        reverseEngineering.reverseEngineering(databaseName);
-        return "";
+        String result = reverseEngineering.reverseEngineering(databaseName);
+        return result;
+    }
+
+    @PostMapping("/updateSystemProperties")
+    public String updateSystemProperties(@RequestParam String propName, @RequestParam String propValue) throws Exception
+    {
+        System.setProperty(propName, propValue);
+        System.err.println(System.getProperties());
+        return "updated succesfuly";
     }
 
     //test controller
