@@ -13,11 +13,11 @@ public class ReverseEngineering {
 
     public String reverseEngineering(String databaseName) throws Exception {
 
-        /*DistributedHelper distributedHelper = new DistributedHelper();
+        DistributedHelper distributedHelper = new DistributedHelper();
         if(!distributedHelper.isDatabasePresentInLocalInstance(databaseName))
         {
             return distributedHelper.executeReverseEngineeringInOtherInstance(databaseName);
-        }*/
+        }
 
         String directoryPath = "LOCALMETADATA/" + databaseName;
         boolean directoryExists = FileUtil.createDirectory("ER");
