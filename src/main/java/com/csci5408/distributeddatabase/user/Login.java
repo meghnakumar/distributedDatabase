@@ -1,5 +1,7 @@
 package com.csci5408.distributeddatabase.user;
 
+import com.csci5408.distributeddatabase.analytics.UserAnalyticsConstants;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -59,6 +61,8 @@ public class Login {
         }
         if(userchecker)
         {
+            System.getProperties().setProperty(UserAnalyticsConstants.LOGGED_IN_USER_NAME, userid);
+            System.err.println(System.getProperties());
             System.out.println("Login Successful.");
             System.out.println("Welcome to DDBMS");
             logger.generalLogger("User with id "+userid+" logged in at"+System.currentTimeMillis());
