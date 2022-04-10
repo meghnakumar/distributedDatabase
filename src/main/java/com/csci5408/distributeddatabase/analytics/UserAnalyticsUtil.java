@@ -3,6 +3,7 @@ package com.csci5408.distributeddatabase.analytics;
 import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.util.PropertyUtil;
 
+import java.nio.file.Path;
 import java.util.Properties;
 
 public class UserAnalyticsUtil
@@ -55,5 +56,10 @@ public class UserAnalyticsUtil
         {
             addNewPropToAnalytics(propName);
         }
+    }
+
+    public String getAnalyticsData()
+    {
+        return FileUtil.readFileData(Path.of(UserAnalyticsConstants.ANALYTICS_USER_FILE_NAME));
     }
 }

@@ -54,6 +54,22 @@ public class DistributedHelper
         return forwardRequestToOtherInstance(mapping, parameterMap).getBody();
     }
 
+    public String executeSQLDumpInOtherInstance(String databaseName)
+    {
+        String mapping = "exportDump";
+        MultiValueMap<String, String> parameterMap= new LinkedMultiValueMap<String, String>();
+        parameterMap.add("databaseName", databaseName);
+        return forwardRequestToOtherInstance(mapping, parameterMap).getBody();
+    }
+
+    public String executeReverseEngineeringInOtherInstance(String databaseName)
+    {
+        String mapping="reverseEngineering";
+        MultiValueMap<String, String> parameterMap= new LinkedMultiValueMap<String, String>();
+        parameterMap.add("databaseName", databaseName);
+        return forwardRequestToOtherInstance(mapping, parameterMap).getBody();
+    }
+
     private ResponseEntity<String> forwardRequestToOtherInstance(String mapping, MultiValueMap<String, String> parameterMap)
     {
         String url = "http://"+ GlobalMetadataConstants.INSTANCE_OTHER+"/"+mapping;

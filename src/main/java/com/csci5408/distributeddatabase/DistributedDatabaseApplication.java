@@ -1,6 +1,9 @@
 package com.csci5408.distributeddatabase;
 
+import com.csci5408.distributeddatabase.analytics.AnalyticsUtil;
+import com.csci5408.distributeddatabase.dataexport.DataExport;
 import com.csci5408.distributeddatabase.queryexecutor.*;
+import com.csci5408.distributeddatabase.reverseengineering.ReverseEngineering;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.*;
 import user.Login;
@@ -61,7 +64,30 @@ public class DistributedDatabaseApplication {
 						String queryResponse = queryExecutor.executeQuery();
 						System.out.println("response for the query " + sql + " is " + queryResponse);
 					}
-					if (operation == 5) {
+					if(operation==2)
+					{
+						System.out.print("Please enter database name to export:::::::");
+						String databaseName = reader.readLine();
+						DataExport dataExport = new DataExport();
+						String response = dataExport.exportSQLDump(databaseName);
+						System.out.println("response for export is "+response);
+					}
+					if(operation==3)
+					{
+						System.out.print("Please enter database name to reverse engineer:::::::");
+						String databaseName = reader.readLine();
+						ReverseEngineering reverseEngineering = new ReverseEngineering();
+						String response = reverseEngineering.reverseEngineering(databaseName);
+						System.out.println("response for reverse engineering is "+response);
+					}
+					if(operation==4)
+					{
+						System.out.println("printing analytics data");
+						AnalyticsUtil analyticsUtil = new AnalyticsUtil();
+						System.out.println(analyticsUtil.getAllAnalyticsData());
+					}
+					if (operation == 5)
+					{
 						try {
 							System.out.print("Please enter the transaction query to execute:::::::" + "\n");
 							String sql = reader.readLine();

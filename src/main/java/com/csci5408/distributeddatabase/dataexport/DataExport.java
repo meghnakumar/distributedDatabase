@@ -1,5 +1,6 @@
 package com.csci5408.distributeddatabase.dataexport;
 
+import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.util.ReadMetaDataUtil;
 
@@ -10,6 +11,12 @@ import java.util.*;
 public class DataExport {
 
     public String exportSQLDump(String database) throws Exception {
+
+        DistributedHelper distributedHelper = new DistributedHelper();
+        if(!distributedHelper.isDatabasePresentInLocalInstance(database))
+        {
+            return distributedHelper.executeSQLDumpInOtherInstance(database);
+        }
 
         String star = "*****************************";
         boolean directoryExists = FileUtil.createDirectory("sqldump");

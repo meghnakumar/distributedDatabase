@@ -1,7 +1,9 @@
 package com.csci5408.distributeddatabase.controller;
 
+import com.csci5408.distributeddatabase.dataexport.DataExport;
 import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataHandler;
 import com.csci5408.distributeddatabase.queryexecutor.QueryExecutor;
+import com.csci5408.distributeddatabase.reverseengineering.ReverseEngineering;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -77,14 +79,17 @@ public class DatabaseController
     @PostMapping("/exportDump")
     public String exportSQLDump(@RequestParam String databaseName) throws Exception
     {
-        //ToDo changes for exportDump
+        DataExport export = new DataExport();
+        export.exportSQLDump(databaseName);
         return "";
     }
 
     @PostMapping("/reverseEngineering")
-    public String performReverseEngineering(@RequestParam String databaseName)
+    public String performReverseEngineering(@RequestParam String databaseName) throws Exception
     {
         //ToDo changes for reverse engineering
+        ReverseEngineering reverseEngineering = new ReverseEngineering();
+        reverseEngineering.reverseEngineering(databaseName);
         return "";
     }
 

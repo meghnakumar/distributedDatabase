@@ -3,6 +3,7 @@ package com.csci5408.distributeddatabase.analytics;
 import com.csci5408.distributeddatabase.query.CreatDatabaseQuery;
 import com.csci5408.distributeddatabase.query.Query;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
+import com.csci5408.distributeddatabase.util.FileUtil;
 
 import static com.csci5408.distributeddatabase.query.QueryType.*;
 
@@ -79,4 +80,13 @@ public class AnalyticsUtil
         }
         return true;
     }
+
+    public String getAllAnalyticsData()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(queryAnalyticsUtil.getAnalyticsData()).append("\n");
+        sb.append(userAnalyticsUtil.getAnalyticsData()).append("\n");
+        return sb.toString();
+    }
+
 }

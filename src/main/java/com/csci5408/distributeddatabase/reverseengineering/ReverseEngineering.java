@@ -1,5 +1,6 @@
 package com.csci5408.distributeddatabase.reverseengineering;
 
+import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.util.ReadMetaDataUtil;
 
@@ -10,6 +11,12 @@ import java.util.*;
 public class ReverseEngineering {
 
     public String reverseEngineering(String databaseName) throws Exception {
+
+        DistributedHelper distributedHelper = new DistributedHelper();
+        if(!distributedHelper.isDatabasePresentInLocalInstance(databaseName))
+        {
+            return distributedHelper.executeReverseEngineeringInOtherInstance(databaseName);
+        }
 
         String directoryPath = "LOCALMETADATA/" + databaseName;
         boolean directoryExists = FileUtil.createDirectory("ER");

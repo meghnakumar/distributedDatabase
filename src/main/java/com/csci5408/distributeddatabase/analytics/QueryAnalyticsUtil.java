@@ -3,6 +3,7 @@ package com.csci5408.distributeddatabase.analytics;
 import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.util.PropertyUtil;
 
+import java.nio.file.Path;
 import java.util.Properties;
 
 public class QueryAnalyticsUtil
@@ -69,5 +70,10 @@ public class QueryAnalyticsUtil
 
             PropertyUtil.flushPropToPropFile(analyticsProp, QueryAnalyticsConstants.ANALYTICS_FILE_NAME);
         }
+    }
+
+    public String getAnalyticsData()
+    {
+        return FileUtil.readFileData(Path.of(QueryAnalyticsConstants.ANALYTICS_FILE_NAME));
     }
 }
