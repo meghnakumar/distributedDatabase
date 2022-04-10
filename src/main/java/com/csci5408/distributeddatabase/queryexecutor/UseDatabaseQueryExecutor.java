@@ -1,5 +1,6 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
+import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.query.UseDatabaseQuery;
 import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
 import com.csci5408.distributeddatabase.user.Logger;
@@ -18,6 +19,10 @@ public class UseDatabaseQueryExecutor implements IQueryExecutor
     {
         System.setProperty(QueryConstants.PROPERTY_CURRENT_DATABASE, useDatabaseQuery.getDatabaseName());
         System.out.println(System.getProperties());
+
+        DistributedHelper distributedHelper = new DistributedHelper();
+        distributedHelper.updateSystemProperties(QueryConstants.PROPERTY_CURRENT_DATABASE,  useDatabaseQuery.getDatabaseName());
+
         Logger.queryLogger("::::::::::::::::USE_DATABASE query executed::::::::::::::::::::");
         return System.getProperties().getProperty(QueryConstants.PROPERTY_CURRENT_DATABASE);
     }

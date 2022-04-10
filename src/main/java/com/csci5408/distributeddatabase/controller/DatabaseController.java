@@ -93,6 +93,14 @@ public class DatabaseController
         return "";
     }
 
+    @PostMapping("/updateSystemProperties")
+    public String updateSystemProperties(@RequestParam String propName, @RequestParam String propValue) throws Exception
+    {
+        System.setProperty(propName, propValue);
+        System.err.println(System.getProperties());
+        return "updated succesfuly";
+    }
+
     //test controller
     @PostMapping("/redirectUpdateGlobalMetaDataProp")
     public String updateGlobalMetadataProp(@RequestParam  String propName, @RequestParam  String propValue)

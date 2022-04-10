@@ -70,6 +70,16 @@ public class DistributedHelper
         return forwardRequestToOtherInstance(mapping, parameterMap).getBody();
     }
 
+
+    public String updateSystemProperties(String propName, String propValue)
+    {
+        String mapping="updateSystemProperties";
+        MultiValueMap<String, String> parameterMap= new LinkedMultiValueMap<String, String>();
+        parameterMap.add("propName", propName);
+        parameterMap.add("propValue", propValue);
+        return forwardRequestToOtherInstance(mapping, parameterMap).getBody();
+    }
+
     private ResponseEntity<String> forwardRequestToOtherInstance(String mapping, MultiValueMap<String, String> parameterMap)
     {
         String url = "http://"+ GlobalMetadataConstants.INSTANCE_OTHER+"/"+mapping;
