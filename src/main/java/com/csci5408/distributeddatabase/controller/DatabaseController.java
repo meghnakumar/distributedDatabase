@@ -89,8 +89,8 @@ public class DatabaseController
     {
         //ToDo changes for reverse engineering
         ReverseEngineering reverseEngineering = new ReverseEngineering();
-        reverseEngineering.reverseEngineering(databaseName);
-        return "";
+        String result = reverseEngineering.reverseEngineering(databaseName);
+        return result;
     }
 
     @PostMapping("/updateSystemProperties")
