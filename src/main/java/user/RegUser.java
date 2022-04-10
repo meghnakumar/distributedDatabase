@@ -11,15 +11,10 @@ import java.util.Scanner;
 public class RegUser {
 
     Logger log = new Logger();
-
-
-
-
     public void registerUser() throws IOException, NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
 
         FileWriter userreg = new FileWriter("user.txt", true);
-        FileWriter userque = new FileWriter("userquestion.txt", true);
 
         Scanner s = new Scanner(System.in);
         System.out.println("==================== Register here ====================");
@@ -42,23 +37,13 @@ public class RegUser {
         System.out.println("What is your born place:");
         String que3 = s.nextLine();
 
-
-
-
         String newuser = "";
         newuser = newuser +"\""+"UserName"+"\""+":"+"\""+username+"\""+"|";
         newuser = newuser +"\""+"UserID"+"\""+":"+"\""+userid+"\""+"|";
         newuser = newuser +"\""+"Password"+"\""+":"+"\""+toHexString(getSHA(password))+"\""+"|";
-
         newuser = newuser +"\""+"Question1"+"\""+":"+"\""+toHexString(getSHA(que1))+"\""+"|";
         newuser = newuser +"\""+"Question2"+"\""+":"+"\""+toHexString(getSHA(que2))+"\""+"|";
-
         newuser = newuser +"\""+"Question3"+"\""+":"+"\""+toHexString(getSHA(que3))+"|\n";
-
-
-
-
-
 
         userreg.append(newuser);
         userreg.flush();
@@ -66,9 +51,6 @@ public class RegUser {
         System.out.println("Registered successfully");
         log.generalLogger("New user registered with id "+userid);
         Logger.eventLogger("Event : registration");
-
-
-
     }
 
     public static byte[] getSHA(String input) throws NoSuchAlgorithmException

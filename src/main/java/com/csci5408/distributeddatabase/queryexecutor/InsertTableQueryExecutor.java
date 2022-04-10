@@ -5,6 +5,7 @@ import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.query.InsertQuery;
 import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
+import user.Logger;
 
 import java.util.*;
 
@@ -58,7 +59,9 @@ public class InsertTableQueryExecutor implements IQueryExecutor, ITransactionExe
         {
             e.printStackTrace();
         }
+        Logger.queryLogger("::::::::::::::::INSERT query executed::::::::::::::::::::");
         return result.toString();
+
     }
 
     @Override
@@ -76,6 +79,7 @@ public class InsertTableQueryExecutor implements IQueryExecutor, ITransactionExe
             }
             ArrayList<HashMap<String, String>> tableData = transaction.getTransactionalTableData().get(insertQuery.getTableName());
             tableData.add(insertQuery.getFieldValueMap());
+            Logger.queryLogger("::::::::::::::::INSERT query in transaction executed::::::::::::::::::::");
         }
         catch(Exception ex)
         {

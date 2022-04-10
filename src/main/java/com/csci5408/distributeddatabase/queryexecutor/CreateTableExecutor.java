@@ -4,6 +4,7 @@ import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
 import com.csci5408.distributeddatabase.query.CreateTableQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
+import user.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,14 +33,14 @@ public class CreateTableExecutor implements IQueryExecutor{
         String tableName = createTableQuery.getTableName();
         String primaryKey = createTableQuery.getPrimaryKey();
 
-        DistributedHelper distributedHelper = new DistributedHelper();
+        /*DistributedHelper distributedHelper = new DistributedHelper();
         if(!distributedHelper.isDatabasePresentInLocalInstance(databaseName))
         {
             System.err.println("routing to other instance");
             result.append(distributedHelper.executeQueryInOtherInstance(this.createTableQuery.getSql()));
             return result.toString();
         }
-
+*/
         System.err.println("executing in current instance");
         String referenceTable="";
         String referenceTableField = "";
@@ -81,6 +82,7 @@ public class CreateTableExecutor implements IQueryExecutor{
             writeFile.close();
 
             result.append("Table created successfully content");
+            Logger.queryLogger("::::::::::::::::CREATE_TABLE query executed::::::::::::::::::::");
         }
         else{
             result.append("table already exists cannot create the table");

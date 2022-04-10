@@ -5,6 +5,7 @@ import com.csci5408.distributeddatabase.query.*;
 import com.csci5408.distributeddatabase.query.parsers.QueryParser;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 import com.csci5408.distributeddatabase.util.FileUtil;
+import user.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,6 +33,7 @@ public class QueryExecutor {
             IQueryExecutor queryExecutor = null;
             QueryParser parser = new QueryParser();
             Query query = parser.parse(sqlQuery);
+            parser.validateQuery(query,null);
             switch (query.getQueryType()) {
                 case CREATE_DATABASE:
                     CreatDatabaseQuery creatDatabaseQuery = (CreatDatabaseQuery) query;
@@ -78,6 +80,7 @@ public class QueryExecutor {
                     queryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
                     break;
                 default:
+                    Logger.eventLogger(query+" "+"QUERY FAILED");
                     System.err.println("You have entered an invalid query");
             }
             return queryExecutor.execute();
@@ -105,6 +108,7 @@ public class QueryExecutor {
                 }
             }
         } else {
+            Logger.eventLogger("::::::::::::::::TRANSACTION FAILED::::::::::::::::::::");
             throw new IllegalAccessException("Entered query is not a transaction");
         }
 
@@ -155,6 +159,7 @@ public class QueryExecutor {
             ITransactionExecutor transactionExecutor = new DeleteQueryExecutor((DeleteQuery) query);
             return transactionExecutor.executeTransaction(transaction);
         }
+        Logger.eventLogger("::::::::::::::::TRANSACTION FAILED::::::::::::::::::::");
         throw new IllegalArgumentException("Oops query executor not found!!");
     }
 

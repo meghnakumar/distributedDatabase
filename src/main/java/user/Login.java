@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Login {
     Logger logger = new Logger();
-    public void loginuser(Scanner sc) throws IOException, NoSuchAlgorithmException {
+    public boolean loginuser(Scanner sc) throws IOException, NoSuchAlgorithmException {
         Scanner s = new Scanner(System.in);
         System.out.println("==================== Login here ====================");
 
@@ -35,7 +35,6 @@ public class Login {
 
         List<String> lines = Files.readAllLines(Path.of("user.txt"));
         boolean userchecker= false;
-
         for(String line: lines){
             String[] parts = line.split("\\|");
             String[] subparts = parts[1].split(":");
@@ -53,21 +52,17 @@ public class Login {
             subparts = parts[5].split(":");
             String recordque3 = subparts[1].substring(1, subparts[1].length());
 
-
-
             if(recordUserId.equals(userid) && recordPassword.equals(password) && recordque1.equals(que1) && recordque2.equals(que2) && recordque3.equals(que3)){
                 userchecker=true;
                 System.out.println(userchecker);
             }
-
         }
         if(userchecker)
         {
-
-
             System.out.println("Login Successful.");
             System.out.println("Welcome to DDBMS");
             logger.generalLogger("User with id "+userid+" logged in at"+System.currentTimeMillis());
+            return true;
 
 
         }
@@ -75,12 +70,11 @@ public class Login {
             System.out.println("Login Unsuccessful.");
             logger.generalLogger(userid+ "Made unsuccessful login attempt");
             Logger.eventLogger("Login failed");
+            return false;
 
         }
 
     }
-
-
 
     public static byte[] getSHA(String input) throws NoSuchAlgorithmException
     {
