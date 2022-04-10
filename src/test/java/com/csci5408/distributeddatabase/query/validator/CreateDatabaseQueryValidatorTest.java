@@ -42,7 +42,7 @@ public class CreateDatabaseQueryValidatorTest {
 
         UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery)parser.parse(sql);
         UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-        useDatabaseQueryExecutor.execute(null);
+        useDatabaseQueryExecutor.execute();
 
         sql = "create table persons(id int, name varchar(255), lastname varchar(255), primary key (id), foreign key (id) references orders(id);";
         parser = new QueryParser();
@@ -62,7 +62,7 @@ public class CreateDatabaseQueryValidatorTest {
 
         UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery)parser.parse(sql);
         UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-        useDatabaseQueryExecutor.execute(null);
+        useDatabaseQueryExecutor.execute();
 
         sql = "update persons set id=janvi where id=14;";
         parser = new QueryParser();
@@ -82,7 +82,7 @@ public class CreateDatabaseQueryValidatorTest {
 
         UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery)parser.parse(sql);
         UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-        useDatabaseQueryExecutor.execute(null);
+        useDatabaseQueryExecutor.execute();
 
         sql = "insert into persons(id, name, lastname) values (1, bharat, padhiyar);";
         parser = new QueryParser();
@@ -102,7 +102,7 @@ public class CreateDatabaseQueryValidatorTest {
 
         UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery)parser.parse(sql);
         UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-        useDatabaseQueryExecutor.execute(null);
+        useDatabaseQueryExecutor.execute();
 
         sql = "select name from persons where id=3;";
         parser = new QueryParser();

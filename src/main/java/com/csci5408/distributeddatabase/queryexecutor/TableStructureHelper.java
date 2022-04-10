@@ -28,7 +28,7 @@ public class TableStructureHelper {
             } else {
                 int i = 0;
                 while (i < columnsNames.size()) {
-                    tableRows.put(columnsNames.get(i), rowContent[i]);
+                    tableRows.put(columnsNames.get(i).trim(), rowContent[i].trim());
                     i++;
                 }
                 tableData.add(tableRows);

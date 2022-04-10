@@ -16,7 +16,7 @@ public class SelectQueryExecutor implements IQueryExecutor {
     }
 
     @Override
-    public boolean execute(Transaction transaction) throws Exception {
+    public boolean execute() throws Exception {
         boolean result = true;
         try {
             String databaseName = QueryExecutorUtil.getChosenDatabase();

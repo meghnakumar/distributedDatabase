@@ -25,24 +25,6 @@ public class QueryExecutor {
         this.sqlQuery = sqlQuery;
     }
 
-    // getting the POJO for transaction and normal query
-    public void execute(String queries) throws Exception {
-        queryParser = new QueryParser();
-        // splitting the query on the basis of ';'
-        List<String> queryList = Arrays.asList(queries.split("(?<=;)"));
-        Transaction transaction = new Transaction();
-        // iterating over the query list
-        for (String query : queryList) {
-            // trimming the query
-            query = query.trim();
-            // if it is not "start" and "commit" transaction query then add it into a queue
-            if (!query.equalsIgnoreCase("start transaction;") && !query.equalsIgnoreCase("commit;")) {
-                transaction.addQuery(queryParser.parse(query));
-            }
-        }
-        executeTransaction(transaction);
-    }
-
     public String executeQuery() {
         try {
             QueryParser parser = new QueryParser();
@@ -51,12 +33,12 @@ public class QueryExecutor {
                 case CREATE_DATABASE:
                     CreatDatabaseQuery creatDatabaseQuery = (CreatDatabaseQuery) query;
                     CreateDatabaseExecutor createDatabaseExecutor = new CreateDatabaseExecutor(creatDatabaseQuery);
-                    createDatabaseExecutor.execute(null);
+                    createDatabaseExecutor.execute();
                     break;
                 case INSERT:
                     InsertQuery insertQuery = (InsertQuery) query;
                     InsertTableQueryExecutor insertTableQueryExecutor = new InsertTableQueryExecutor(insertQuery);
-                    insertTableQueryExecutor.execute(null);
+                    insertTableQueryExecutor.execute();
                     break;
                 case CREATE_TABLE:
                     if (!QueryExecutorUtil.isDatabaseChosen())
@@ -64,7 +46,7 @@ public class QueryExecutor {
                     else {
                         CreateTableQuery createTableQuery = (CreateTableQuery) query;
                         CreateTableExecutor createTableExecutor = new CreateTableExecutor(createTableQuery, QueryExecutorUtil.getChosenDatabase());
-                        createTableExecutor.execute(null);
+                        createTableExecutor.execute();
                     }
                     break;
                 case UPDATE:
@@ -73,7 +55,7 @@ public class QueryExecutor {
                     else {
                         UpdateQuery updateQuery = (UpdateQuery) query;
                         UpdateQueryExecutor updateQueryExecutor = new UpdateQueryExecutor(updateQuery);
-                        updateQueryExecutor.execute(null);
+                        updateQueryExecutor.execute();
                     }
                     break;
                 case DELETE:
@@ -82,7 +64,7 @@ public class QueryExecutor {
                     else {
                         DeleteQuery deleteQuery = (DeleteQuery) query;
                         DeleteQueryExecutor deleteQueryExecutor = new DeleteQueryExecutor(deleteQuery);
-                        deleteQueryExecutor.execute(null);
+                        deleteQueryExecutor.execute();
                     }
                     break;
                 case SELECT:
@@ -91,13 +73,13 @@ public class QueryExecutor {
                     else {
                         SelectQuery selectQuery = (SelectQuery) query;
                         SelectQueryExecutor selectQueryExecutor = new SelectQueryExecutor(selectQuery);
-                        selectQueryExecutor.execute(null);
+                        selectQueryExecutor.execute();
                     }
                     break;
                 case USE:
                     UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery) query;
                     UseDatabaseQueryExecutor useDatabaseQueryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
-                    useDatabaseQueryExecutor.execute(null);
+                    useDatabaseQueryExecutor.execute();
                     break;
                 default:
                     System.err.println("You have entered an invalid query");
@@ -108,8 +90,26 @@ public class QueryExecutor {
         return "";
     }
 
+    public void executeTransaction(String transactionQuery) throws Exception
+    {
+        queryParser = new QueryParser();
+        // splitting the query on the basis of ';'
+        List<String> queryList = Arrays.asList(transactionQuery.split("(?<=;)"));
+        Transaction transaction = new Transaction();
+        if(queryList.get(0).equalsIgnoreCase("start transaction") && queryList.get(queryList.size()-1).equalsIgnoreCase("commit")) {
+            // iterating over the query list
+            for (String query : queryList) {
+                // trimming the query
+                query = query.trim();
+                // if it is not "start" and "commit" transaction query then add it into a queue
+                if (!query.equalsIgnoreCase("start transaction;") && !query.equalsIgnoreCase("commit;")) {
+                    transaction.addQuery(queryParser.parse(query));
+                }
+            }
+        } else {
+            throw new IllegalAccessException("Entered query is not a transaction");
+        }
 
-    private void executeTransaction(Transaction transaction) throws Exception {
         //ToDo handle transaction queries here
         Queue<Query> queries = transaction.getQueries();
         IQueryExecutor executor = null;
@@ -118,10 +118,11 @@ public class QueryExecutor {
         for (Query query : queries) {
             queryParser.validateQuery(query, transaction);
         }
-        boolean isQuerySuccessfullyExecuted = false;
-        for (Query query : queries) {
-            executor = getQueryExecutorByQueryType(query);
-            isQuerySuccessfullyExecuted = executor.execute(transaction);
+
+        boolean isQuerySuccessfullyExecuted=false;
+        for (Query query : queries)
+        {
+            isQuerySuccessfullyExecuted = executeQueryForTransactions(query, transaction);
             if(!isQuerySuccessfullyExecuted) {
                 break;
             }
@@ -133,21 +134,24 @@ public class QueryExecutor {
         }
     }
 
-    private IQueryExecutor getQueryExecutorByQueryType(Query query) throws Exception {
+    private boolean executeQueryForTransactions(Query query, Transaction transaction) throws Exception {
         if (query.getQueryType() == QueryType.CREATE_DATABASE) {
-            return new CreateDatabaseExecutor((CreatDatabaseQuery) query);
+             return new CreateDatabaseExecutor((CreatDatabaseQuery) query).execute();
         } else if (query.getQueryType() == QueryType.CREATE_TABLE) {
-            return new CreateTableExecutor((CreateTableQuery) query, QueryExecutorUtil.getChosenDatabase());
+            return new CreateTableExecutor((CreateTableQuery) query, QueryExecutorUtil.getChosenDatabase()).execute();
         } else if (query.getQueryType() == QueryType.INSERT) {
-            return new InsertTableQueryExecutor((InsertQuery) query);
+            ITransactionExecutor transactionExecutor = new InsertTableQueryExecutor((InsertQuery) query);
+            return transactionExecutor.executeTransaction(transaction);
         } else if (query.getQueryType() == QueryType.SELECT) {
-            return new SelectQueryExecutor((SelectQuery) query);
+            return new SelectQueryExecutor((SelectQuery) query).execute();
         } else if (query.getQueryType() == QueryType.USE) {
-            return new UseDatabaseQueryExecutor((UseDatabaseQuery) query);
+            return new UseDatabaseQueryExecutor((UseDatabaseQuery) query).execute();
         } else if (query.getQueryType() == QueryType.UPDATE) {
-            return new UpdateQueryExecutor((UpdateQuery) query);
+            ITransactionExecutor transactionExecutor = new UpdateQueryExecutor((UpdateQuery) query);
+            return transactionExecutor.executeTransaction(transaction);
         } else if (query.getQueryType() == QueryType.DELETE) {
-            return new DeleteQueryExecutor((DeleteQuery) query);
+            ITransactionExecutor transactionExecutor = new DeleteQueryExecutor((DeleteQuery) query);
+            return transactionExecutor.executeTransaction(transaction);
         }
         throw new IllegalArgumentException("Oops query executor not found!!");
     }
