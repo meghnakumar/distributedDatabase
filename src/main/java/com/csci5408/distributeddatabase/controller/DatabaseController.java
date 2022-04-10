@@ -4,6 +4,7 @@ import com.csci5408.distributeddatabase.dataexport.DataExport;
 import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataHandler;
 import com.csci5408.distributeddatabase.queryexecutor.QueryExecutor;
 import com.csci5408.distributeddatabase.reverseengineering.ReverseEngineering;
+import com.csci5408.distributeddatabase.user.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -15,55 +16,34 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.AsyncRestOperations;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.Properties;
 
 @RestController
 public class DatabaseController
 {
-    @GetMapping("/")
-    public String homePage()
-    {
-        System.err.println("get api called");
-        return "Distributed databse application";
-    }
-
-    @GetMapping("/home")
-    public String indexPage()
-    {
-        System.err.println("index api called");
-        return "Index API return";
-    }
-
-    @GetMapping("/test")
-    public String redirectTest()
-    {
-        RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl = "http://localhost:8080/home";
-        ResponseEntity<String> response = restTemplate.getForEntity(fooResourceUrl, String.class);
-        return response.getBody();
-    }
 
     @GetMapping("/getGlobalMetaDataProp")
-    public Properties getGlobalMetaData()
-    {
+    public Properties getGlobalMetaData() throws IOException {
         GlobalMetadataHandler globalMetadataHandler = new GlobalMetadataHandler();
+        Logger.eventLogger("Getting global meta data property");
         return globalMetadataHandler.getGlobalMetadataProperties();
     }
 
     @PostMapping("/updateGlobalMetaDataProp")
-    public Properties redirectUpdateGlobalMetadataProp(@RequestParam  String propName, @RequestParam  String propValue)
-    {
+    public Properties redirectUpdateGlobalMetadataProp(@RequestParam  String propName, @RequestParam  String propValue) throws IOException {
         System.err.println("update global properties = "+propName+" _ "+propValue);
         GlobalMetadataHandler globalMetadataHandler = new GlobalMetadataHandler();
         globalMetadataHandler.writeToMetaData(propName, propValue);
+        Logger.eventLogger("Updating global meta data properties for both the instances");
         return globalMetadataHandler.getGlobalMetadataProperties();
     }
 
     @PostMapping("/executeQuery")
-    public String executeQuery(@RequestParam String query)
-    {
+    public String executeQuery(@RequestParam String query) throws IOException {
         System.err.println("executing query "+ query);
         QueryExecutor queryExecutor = new QueryExecutor(query);
+        Logger.eventLogger("Executing query");
         return queryExecutor.executeQuery();
     }
 
@@ -72,6 +52,7 @@ public class DatabaseController
     {
         System.err.println("executing transaction for other instance"+ transactionQuery);
         QueryExecutor queryExecutor = new QueryExecutor(transactionQuery);
+        Logger.eventLogger("Executing Transaction");
         return queryExecutor.executeTransaction(transactionQuery);
     }
 
@@ -80,6 +61,7 @@ public class DatabaseController
     {
         DataExport export = new DataExport();
         String result = export.exportSQLDump(databaseName);
+        Logger.eventLogger("Exporting the Dump");
         return result;
     }
 
@@ -89,6 +71,7 @@ public class DatabaseController
         //ToDo changes for reverse engineering
         ReverseEngineering reverseEngineering = new ReverseEngineering();
         String result = reverseEngineering.reverseEngineering(databaseName);
+        Logger.eventLogger("Reverse Engineering performed");
         return result;
     }
 
@@ -97,13 +80,13 @@ public class DatabaseController
     {
         System.setProperty(propName, propValue);
         System.err.println(System.getProperties());
+        Logger.eventLogger("Updating the System Properties");
         return "updated succesfuly";
     }
 
     //test controller
     @PostMapping("/redirectUpdateGlobalMetaDataProp")
-    public String updateGlobalMetadataProp(@RequestParam  String propName, @RequestParam  String propValue)
-    {
+    public String updateGlobalMetadataProp(@RequestParam  String propName, @RequestParam  String propValue) throws IOException {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://35.226.94.226:8080/redirectUpdateGlobalMetaDataProp";
 
@@ -118,6 +101,7 @@ public class DatabaseController
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
         ResponseEntity<String> response = restTemplate.postForEntity( url, request , String.class );
+        Logger.eventLogger("Redirecting to update the global meta data property");
 
         return response.getBody();
     }

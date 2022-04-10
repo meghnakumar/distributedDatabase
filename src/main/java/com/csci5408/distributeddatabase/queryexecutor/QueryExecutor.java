@@ -137,7 +137,7 @@ public class QueryExecutor {
             }
         } else {
             Logger.eventLogger("::::::::::::::::TRANSACTION FAILED::::::::::::::::::::");
-            throw new IllegalAccessException("Entered query is not a transaction");
+            return "Entered query is not a transaction";
         }
 
         //ToDo handle transaction queries here
