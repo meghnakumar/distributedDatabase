@@ -145,9 +145,9 @@ public class QueryExecutor {
         IQueryExecutor executor = null;
         transaction.setDatabaseName(QueryExecutorUtil.getChosenDatabase());
         initializeTableInTransaction(transaction);
-//        for (Query query : queries) {
-//            queryParser.validateQuery(query, transaction);
-//        }
+        for (Query query : queries) {
+            queryParser.validateQuery(query, transaction);
+        }
 
         boolean isQuerySuccessfullyExecuted=false;
         for (Query query : queries)
