@@ -65,6 +65,29 @@ public class DatabaseController
         return queryExecutor.executeQuery();
     }
 
+    @PostMapping("/executeTransaction")
+    public String executeTransaction(@RequestParam String transactionQuery) throws Exception
+    {
+        System.err.println("executing transaction for other instance"+ transactionQuery);
+        QueryExecutor queryExecutor = new QueryExecutor(transactionQuery);
+        queryExecutor.executeTransaction(transactionQuery);
+        return queryExecutor.executeQuery();
+    }
+
+    @PostMapping("/exportDump")
+    public String exportSQLDump(@RequestParam String databaseName) throws Exception
+    {
+        //ToDo changes for exportDump
+        return "";
+    }
+
+    @PostMapping("/reverseEngineering")
+    public String performReverseEngineering(@RequestParam String databaseName)
+    {
+        //ToDo changes for reverse engineering
+        return "";
+    }
+
     //test controller
     @PostMapping("/redirectUpdateGlobalMetaDataProp")
     public String updateGlobalMetadataProp(@RequestParam  String propName, @RequestParam  String propValue)

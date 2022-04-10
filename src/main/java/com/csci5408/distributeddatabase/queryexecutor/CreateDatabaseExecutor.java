@@ -7,16 +7,15 @@ import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataHand
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
 import com.csci5408.distributeddatabase.query.CreatDatabaseQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
+import user.Logger;
 
 public class CreateDatabaseExecutor implements IQueryExecutor
 {
     private String databaseName;
-
     private GlobalMetadataHandler globalMetadataHandler;
-
     private LocalMetaDataHandler localMetaDataHandler;
-
     private CreatDatabaseQuery creatDatabaseQuery;
+    private Logger logger;
 
     public String getDatabaseName() {
         return databaseName;
@@ -63,6 +62,7 @@ public class CreateDatabaseExecutor implements IQueryExecutor
         this.databaseName=creatDatabaseQuery.getDatabaseName();
         localMetaDataHandler = new LocalMetaDataHandler();
         globalMetadataHandler = new GlobalMetadataHandler();
+        logger = new Logger();
     }
 
     @Override
@@ -87,12 +87,12 @@ public class CreateDatabaseExecutor implements IQueryExecutor
 
                 //update other instance global metadata property
                 System.err.println("writing new database to other instance global metadata");
-                DistributedHelper distributedHelper = new DistributedHelper();
-                result.append(distributedHelper.updateGlobalMetadataPropInOtherInstance(databaseName, GlobalMetadataConstants.INSTANCE_CURRENT));
-
+                /*DistributedHelper distributedHelper = new DistributedHelper();
+                result.append(distributedHelper.updateGlobalMetadataPropInOtherInstance(databaseName, GlobalMetadataConstants.INSTANCE_CURRENT));*/
                 //create local metadata for the database
                 localMetaDataHandler.makeMetadataForDatabase(databaseName);
             }
+        Logger.queryLogger("::::::::::::::::CREATE_DATABASE query executed::::::::::::::::::::");
         }
         catch(Exception ex)
         {

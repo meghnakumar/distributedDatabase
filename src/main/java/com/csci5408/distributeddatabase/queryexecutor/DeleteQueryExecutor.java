@@ -4,6 +4,7 @@ import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.query.DeleteQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
+import user.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class DeleteQueryExecutor implements IQueryExecutor, ITransactionExecutor
             String path= System.getProperty("user.dir")+ File.separator+chosenDatabaseName+File.separator+tableName+".txt";
             FileUtil.writeTableHashMapToFile(updatedTableData, path);
             result.append("changes updated in table and flushed to file successfully");
+            Logger.queryLogger("::::::::::::::::DELETE query executed::::::::::::::::::::");
 
         }
         return result.toString();
@@ -95,6 +97,7 @@ public class DeleteQueryExecutor implements IQueryExecutor, ITransactionExecutor
                tableData = transaction.getTransactionalTableData().get(deleteQuery.getTableName());
                deleteQueryOnDataStructure();
                transaction.getTransactionalTableData().put(deleteQuery.getTableName(), updatedTableData);
+               Logger.queryLogger("::::::::::::::::DELETE query in transaction executed::::::::::::::::::::");
                return true;
            }
            else

@@ -3,6 +3,7 @@ package com.csci5408.distributeddatabase.query.parsers;
 import com.csci5408.distributeddatabase.query.Query;
 import com.csci5408.distributeddatabase.query.validator.*;
 import com.csci5408.distributeddatabase.queryexecutor.Transaction;
+import user.Logger;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,6 +48,7 @@ public class QueryParser {
                 break;
 
             default:
+                Logger.eventLogger(sqlQuery+"     QUERY FAILED");
                 throw new Exception("Oops!! Query Type is Invalid");
         }
         return parser.parse();
@@ -83,6 +85,7 @@ public class QueryParser {
                 break;
 
             default:
+                Logger.eventLogger(query+"     QUERY FAILED");
                 throw new Exception("Oops!! Query Type is Invalid");
         }
     }

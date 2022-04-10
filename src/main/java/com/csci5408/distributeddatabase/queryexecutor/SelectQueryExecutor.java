@@ -3,6 +3,7 @@ package com.csci5408.distributeddatabase.queryexecutor;
 import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.query.SelectQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
+import user.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,6 +80,7 @@ public class SelectQueryExecutor implements IQueryExecutor {
             result.append("Exception occurred in query execution"+ex.getMessage());
             ex.printStackTrace();
         }
+        Logger.queryLogger("::::::::::::::::SELECT query executed::::::::::::::::::::");
         return result.toString();
     }
 

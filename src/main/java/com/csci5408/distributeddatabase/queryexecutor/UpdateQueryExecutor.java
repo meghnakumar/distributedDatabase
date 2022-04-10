@@ -4,6 +4,7 @@ import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.query.UpdateQuery;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 import com.csci5408.distributeddatabase.util.FileUtil;
+import user.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class UpdateQueryExecutor implements IQueryExecutor, ITransactionExecutor
         {
             result.append("Table does not exists in the instance");
         }
+        Logger.queryLogger("::::::::::::::::UPDATE query executed::::::::::::::::::::");
         return result.toString();
     }
 
@@ -93,6 +95,7 @@ public class UpdateQueryExecutor implements IQueryExecutor, ITransactionExecutor
             {
                 tableData = transaction.getTransactionalTableData().get(updateQuery.getTableName());
                 updateQueryOnDataStructure();
+                Logger.queryLogger("::::::::::::::::UPDATE query in transaction executed::::::::::::::::::::");
                 return true;
             }
         }

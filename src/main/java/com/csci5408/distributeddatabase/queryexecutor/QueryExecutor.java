@@ -1,10 +1,12 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
+import com.csci5408.distributeddatabase.analytics.AnalyticsUtil;
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
 import com.csci5408.distributeddatabase.query.*;
 import com.csci5408.distributeddatabase.query.parsers.QueryParser;
 import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 import com.csci5408.distributeddatabase.util.FileUtil;
+import user.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +16,7 @@ import java.util.*;
 public class QueryExecutor {
     // query parser
     private QueryParser queryParser;
-
+    private AnalyticsUtil analyticsUtil;
     private String sqlQuery;
 
     public QueryExecutor() {
@@ -23,6 +25,7 @@ public class QueryExecutor {
     // constructor
     public QueryExecutor(String sqlQuery) {
         this.sqlQuery = sqlQuery;
+        this.analyticsUtil=new AnalyticsUtil();
     }
 
     public String executeQuery()
@@ -32,14 +35,18 @@ public class QueryExecutor {
             IQueryExecutor queryExecutor = null;
             QueryParser parser = new QueryParser();
             Query query = parser.parse(sqlQuery);
+            parser.validateQuery(query,null);
             switch (query.getQueryType()) {
                 case CREATE_DATABASE:
                     CreatDatabaseQuery creatDatabaseQuery = (CreatDatabaseQuery) query;
                     queryExecutor = new CreateDatabaseExecutor(creatDatabaseQuery);
+                    this.analyticsUtil.addAnalytics(creatDatabaseQuery);
                     break;
                 case INSERT:
                     InsertQuery insertQuery = (InsertQuery) query;
                     queryExecutor = new InsertTableQueryExecutor(insertQuery);
+
+                    this.analyticsUtil.addAnalytics(insertQuery);
                     break;
                 case CREATE_TABLE:
                     if (!QueryExecutorUtil.isDatabaseChosen())
@@ -47,6 +54,8 @@ public class QueryExecutor {
                     else {
                         CreateTableQuery createTableQuery = (CreateTableQuery) query;
                         queryExecutor = new CreateTableExecutor(createTableQuery, QueryExecutorUtil.getChosenDatabase());
+
+                        this.analyticsUtil.addAnalytics(createTableQuery);
                     }
                     break;
                 case UPDATE:
@@ -55,6 +64,8 @@ public class QueryExecutor {
                     else{
                         UpdateQuery updateQuery = (UpdateQuery) query;
                         queryExecutor = new UpdateQueryExecutor(updateQuery);
+
+                        this.analyticsUtil.addAnalytics(updateQuery);
                     }
                     break;
                 case DELETE:
@@ -63,6 +74,8 @@ public class QueryExecutor {
                     else{
                         DeleteQuery deleteQuery = (DeleteQuery) query;
                         queryExecutor = new DeleteQueryExecutor(deleteQuery);
+
+                        this.analyticsUtil.addAnalytics(deleteQuery);
                     }
                     break;
                 case SELECT:
@@ -71,13 +84,18 @@ public class QueryExecutor {
                     else{
                         SelectQuery selectQuery = (SelectQuery) query;
                         queryExecutor = new SelectQueryExecutor(selectQuery);
+
+                        this.analyticsUtil.addAnalytics(selectQuery);
                     }
                     break;
                 case USE:
                     UseDatabaseQuery useDatabaseQuery = (UseDatabaseQuery) query;
                     queryExecutor = new UseDatabaseQueryExecutor(useDatabaseQuery);
+
+                    this.analyticsUtil.addAnalytics(useDatabaseQuery);
                     break;
                 default:
+                    Logger.eventLogger(query+" "+"QUERY FAILED");
                     System.err.println("You have entered an invalid query");
             }
             return queryExecutor.execute();
@@ -94,7 +112,7 @@ public class QueryExecutor {
         // splitting the query on the basis of ';'
         List<String> queryList = Arrays.asList(transactionQuery.split("(?<=;)"));
         Transaction transaction = new Transaction();
-        if(queryList.get(0).equalsIgnoreCase("start transaction") && queryList.get(queryList.size()-1).equalsIgnoreCase("commit")) {
+        if(queryList.get(0).equalsIgnoreCase("start transaction;") && queryList.get(queryList.size()-1).trim().equalsIgnoreCase("commit;")) {
             // iterating over the query list
             for (String query : queryList) {
                 // trimming the query
@@ -105,6 +123,7 @@ public class QueryExecutor {
                 }
             }
         } else {
+            Logger.eventLogger("::::::::::::::::TRANSACTION FAILED::::::::::::::::::::");
             throw new IllegalAccessException("Entered query is not a transaction");
         }
 
@@ -155,6 +174,7 @@ public class QueryExecutor {
             ITransactionExecutor transactionExecutor = new DeleteQueryExecutor((DeleteQuery) query);
             return transactionExecutor.executeTransaction(transaction);
         }
+        Logger.eventLogger("::::::::::::::::TRANSACTION FAILED::::::::::::::::::::");
         throw new IllegalArgumentException("Oops query executor not found!!");
     }
 
