@@ -41,7 +41,8 @@ public class DistributedHelper
         MultiValueMap<String, String> parameterMap= new LinkedMultiValueMap<String, String>();
         parameterMap.add("propName", keyName);
         parameterMap.add("propValue", keyValue);
-        return forwardRequestToOtherInstance(mapping, parameterMap).toString();
+        return "";
+//        return forwardRequestToOtherInstance(mapping, parameterMap).toString();
     }
 
     public String executeQueryInOtherInstance(String query)

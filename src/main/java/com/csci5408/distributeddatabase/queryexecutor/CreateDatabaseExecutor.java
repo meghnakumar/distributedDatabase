@@ -66,7 +66,7 @@ public class CreateDatabaseExecutor implements IQueryExecutor
     }
 
     @Override
-    public boolean execute(Transaction transaction)
+    public boolean execute()
     {
         boolean result=true;
         try

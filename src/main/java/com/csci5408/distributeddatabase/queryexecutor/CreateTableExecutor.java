@@ -26,7 +26,7 @@ public class CreateTableExecutor implements IQueryExecutor{
     }
 
     @Override
-    public boolean execute(Transaction transaction) throws IOException {
+    public boolean execute() throws IOException {
         String tableName = createTableQuery.getTableName();
         String primaryKey = createTableQuery.getPrimaryKey();
         String referenceTable="";

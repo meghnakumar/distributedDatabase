@@ -7,7 +7,7 @@ import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 
 import java.util.*;
 
-public class InsertTableQueryExecutor implements IQueryExecutor
+public class InsertTableQueryExecutor implements IQueryExecutor, ITransactionExecutor
 {
     private InsertQuery insertQuery;
 
@@ -17,7 +17,7 @@ public class InsertTableQueryExecutor implements IQueryExecutor
     }
 
     @Override
-    public boolean execute(Transaction transaction) throws Exception
+    public boolean execute() throws Exception
     {
         String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
         String tableName = insertQuery.getTableName();
@@ -30,9 +30,7 @@ public class InsertTableQueryExecutor implements IQueryExecutor
 
         //step flush the data to the file
         try {
-            if (transaction == null) {
                 String tableFileName = QueryExecutorUtil.getTableFileName(chosenDatabaseName, tableName);
-
                 //ToDo flush the insert data to the table
                 LinkedHashMap columnValueMap = insertQuery.getFieldValueMap();
                 Set<String> columnNames = columnValueMap.keySet();
@@ -46,9 +44,6 @@ public class InsertTableQueryExecutor implements IQueryExecutor
                 String newRow = String.join(QueryConstants.SEPARATOR_ROW_COLUMN, columnValues);
                 System.err.println("inserting new row into the table " + insertQuery.getTableName());
                 FileUtil.writeToExistingFile(tableFileName, newRow);
-            } else {
-                executeInsertInTransaction(transaction, insertQuery);
-            }
         }
         catch (Exception e)
         {
@@ -57,8 +52,27 @@ public class InsertTableQueryExecutor implements IQueryExecutor
         return true;
     }
 
-    private void executeInsertInTransaction(Transaction transaction, InsertQuery insertQuery) {
-        ArrayList<HashMap<String, String>> tableData = transaction.getTransactionalTableData().get(insertQuery.getTableName());
-        tableData.add(insertQuery.getFieldValueMap());
+    @Override
+    public boolean executeTransaction(Transaction transaction)
+    {
+        try
+        {
+            String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
+            String tableName = insertQuery.getTableName();
+
+            if(!QueryExecutorUtil.isTableExistsInDatabase(chosenDatabaseName, tableName))
+            {
+                System.err.println("Insert table not possible here as database or the table text file does not exists");
+                return false;
+            }
+            ArrayList<HashMap<String, String>> tableData = transaction.getTransactionalTableData().get(insertQuery.getTableName());
+            tableData.add(insertQuery.getFieldValueMap());
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

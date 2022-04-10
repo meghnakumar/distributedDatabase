@@ -32,7 +32,7 @@ public class DistributedDatabaseApplication
 						System.out.print("Please enter the transaction query to execute:::::::" + "\n");
 						String sql = reader.readLine();
 						QueryExecutor queryExecutor = new QueryExecutor(sql);
-						queryExecutor.execute(sql);
+						queryExecutor.executeTransaction(sql);
 					} catch (Exception exception) {
 						System.err.println("Cannot commit transaction: " + exception.getMessage());
 					}
