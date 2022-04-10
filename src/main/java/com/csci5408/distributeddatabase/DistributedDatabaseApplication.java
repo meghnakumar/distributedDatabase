@@ -94,6 +94,7 @@ public class DistributedDatabaseApplication {
 							QueryExecutor queryExecutor = new QueryExecutor(sql);
 							queryExecutor.executeTransaction(sql);
 						} catch (Exception exception) {
+							exception.printStackTrace();
 							System.err.println("Cannot commit transaction: " + exception.getMessage());
 						}
 					}
