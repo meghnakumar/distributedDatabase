@@ -8,6 +8,7 @@ import com.csci5408.distributeddatabase.queryexecutor.util.QueryExecutorUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class DeleteQueryExecutor implements IQueryExecutor, ITransactionExecutor {
     private String tableName;
@@ -15,9 +16,9 @@ public class DeleteQueryExecutor implements IQueryExecutor, ITransactionExecutor
     private String whereValue;
     private String operator;
     private DeleteQuery deleteQuery;
-    private ArrayList<HashMap<String, String>> tableData;
-    private ArrayList<HashMap<String, String>> updatedTableData = new ArrayList<>();
-    private HashMap<String, String> updatedHashMap = new HashMap<>();
+    private ArrayList<LinkedHashMap<String, String>> tableData;
+    private ArrayList<LinkedHashMap<String, String>> updatedTableData = new ArrayList<>();
+    private LinkedHashMap<String, String> updatedHashMap = new LinkedHashMap<>();
 
 
     public DeleteQueryExecutor(DeleteQuery deleteQuery) {
@@ -56,7 +57,7 @@ public class DeleteQueryExecutor implements IQueryExecutor, ITransactionExecutor
 
     private void deleteQueryOnDataStructure()
     {
-        for (HashMap<String, String> eachTableData : tableData) {
+        for (LinkedHashMap<String, String> eachTableData : tableData) {
             if (operator.equalsIgnoreCase("=") || operator.equalsIgnoreCase("!=")) {
                 if (eachTableData.get(whereColumn).equalsIgnoreCase(whereValue)) {
                     //do nothing

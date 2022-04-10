@@ -5,6 +5,7 @@ import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Set;
 
 public class FileUtil
@@ -76,7 +77,7 @@ public class FileUtil
         }
     }
 
-    public static boolean writeTableHashMapToFile(ArrayList<HashMap<String, String>> tableContent, String tablePath)
+    public static boolean writeTableHashMapToFile(ArrayList<LinkedHashMap<String, String>> tableContent, String tablePath)
     {
         boolean result = true, isHeaderRowCreated=false;
         try

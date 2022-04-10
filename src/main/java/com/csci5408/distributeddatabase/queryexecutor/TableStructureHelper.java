@@ -10,7 +10,7 @@ public class TableStructureHelper {
 
     public static ArrayList getTableStructure(String databaseName, String tableName) throws IOException {
         String line = "";
-        ArrayList<HashMap> tableData = new ArrayList<>();
+        ArrayList<LinkedHashMap<String, String>> tableData = new ArrayList<>();
         int counter = 1;
         String path= System.getProperty("user.dir")+ File.separator+databaseName+File.separator+tableName+".txt";
         File file = new File(path);
@@ -18,7 +18,7 @@ public class TableStructureHelper {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
         while ((line = bufferedReader.readLine()) != null) {
             String[] rowContent = line.split("(\\*\\|){2}");
-            HashMap<String, String> tableRows = new HashMap<>();
+            LinkedHashMap<String, String> tableRows = new LinkedHashMap<>();
             if (counter == 1) {
                 int columns = rowContent.length;
                 int i = 0;
