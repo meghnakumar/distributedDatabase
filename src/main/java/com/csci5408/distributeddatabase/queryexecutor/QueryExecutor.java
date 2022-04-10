@@ -94,7 +94,7 @@ public class QueryExecutor {
         // splitting the query on the basis of ';'
         List<String> queryList = Arrays.asList(transactionQuery.split("(?<=;)"));
         Transaction transaction = new Transaction();
-        if(queryList.get(0).equalsIgnoreCase("start transaction") && queryList.get(queryList.size()-1).equalsIgnoreCase("commit")) {
+        if(queryList.get(0).equalsIgnoreCase("start transaction;") && queryList.get(queryList.size()-1).trim().equalsIgnoreCase("commit;")) {
             // iterating over the query list
             for (String query : queryList) {
                 // trimming the query
