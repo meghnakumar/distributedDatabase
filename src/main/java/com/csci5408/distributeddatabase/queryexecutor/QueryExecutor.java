@@ -154,6 +154,7 @@ public class QueryExecutor {
         {
             isQuerySuccessfullyExecuted = executeQueryForTransactions(query, transaction);
             if(!isQuerySuccessfullyExecuted) {
+                System.out.println("::::::::::::::::::Transaction rolled back::::::::::::::");
                 break;
             }
         }
