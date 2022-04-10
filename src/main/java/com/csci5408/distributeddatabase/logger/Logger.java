@@ -63,7 +63,7 @@ public class Logger {
     private static String getDate() {
 
       Date date = new Date();
-      SimpleDateFormat logDate = new SimpleDateFormat("dd/MMM/YYYY - EEE");
+      SimpleDateFormat logDate = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
       String lDate = logDate.format(date);
       lDate = "\n********************** [ " + lDate + " ] ******************** \n";
 
