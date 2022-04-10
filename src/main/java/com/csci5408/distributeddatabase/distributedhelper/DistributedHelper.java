@@ -14,10 +14,6 @@ import java.util.Properties;
 
 public class DistributedHelper
 {
-    private String currentInstanceIP;
-
-    private String otherInstanceIP;
-
     public boolean isDatabasePresentInLocalInstance(String databaseName)
     {
         GlobalMetadataHandler globalMetadataHandler = new GlobalMetadataHandler();
@@ -37,6 +33,25 @@ public class DistributedHelper
         }
     }
 
+    public boolean isDatabasePresentInOtherInstance(String databaseName)
+    {
+        GlobalMetadataHandler globalMetadataHandler = new GlobalMetadataHandler();
+        Properties prop = globalMetadataHandler.getGlobalMetadataProperties();
+
+        if(prop.containsKey(databaseName))
+        {
+            String databaseInstanceIp = prop.getProperty(databaseName);
+            System.err.println("Other instance IP="+GlobalMetadataConstants.INSTANCE_OTHER+" database ip= "+databaseInstanceIp);
+            System.err.println("Is database present in current instance = "+ GlobalMetadataConstants.INSTANCE_OTHER.equals(databaseInstanceIp));
+            return GlobalMetadataConstants.INSTANCE_OTHER.equals(databaseInstanceIp);
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
     public String updateGlobalMetadataPropInOtherInstance(String keyName, String keyValue)
     {
         String mapping = "updateGlobalMetaDataProp";
@@ -51,6 +66,14 @@ public class DistributedHelper
         String mapping = "executeQuery";
         MultiValueMap<String, String> parameterMap= new LinkedMultiValueMap<String, String>();
         parameterMap.add("query", query);
+        return forwardRequestToOtherInstance(mapping, parameterMap).getBody();
+    }
+
+    public String executeTransactionInOtherInstance(String transactionQuery)
+    {
+        String mapping = "executeTransaction";
+        MultiValueMap<String, String> parameterMap= new LinkedMultiValueMap<String, String>();
+        parameterMap.add("transactionQuery", transactionQuery);
         return forwardRequestToOtherInstance(mapping, parameterMap).getBody();
     }
 

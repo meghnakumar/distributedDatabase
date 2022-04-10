@@ -1,6 +1,7 @@
 package com.csci5408.distributeddatabase.queryexecutor;
 
 import com.csci5408.distributeddatabase.analytics.AnalyticsUtil;
+import com.csci5408.distributeddatabase.distributedhelper.DistributedHelper;
 import com.csci5408.distributeddatabase.localmetadatahandler.LocalMetaDataHandler;
 import com.csci5408.distributeddatabase.query.*;
 import com.csci5408.distributeddatabase.query.parsers.QueryParser;
@@ -110,6 +111,16 @@ public class QueryExecutor {
 
     public String executeTransaction(String transactionQuery) throws Exception
     {
+
+        String chosenDatabaseName = QueryExecutorUtil.getChosenDatabase();
+        DistributedHelper distributedHelper = new DistributedHelper();
+
+        if(!distributedHelper.isDatabasePresentInOtherInstance(chosenDatabaseName))
+        {
+            System.err.println("routing transaction to other instance as db is present there");
+            return distributedHelper.executeTransactionInOtherInstance(chosenDatabaseName);
+        }
+
         queryParser = new QueryParser();
         // splitting the query on the basis of ';'
         List<String> queryList = Arrays.asList(transactionQuery.split("(?<=;)"));
