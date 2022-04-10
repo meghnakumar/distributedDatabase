@@ -8,6 +8,7 @@ import com.csci5408.distributeddatabase.util.FileUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class UpdateQueryExecutor implements IQueryExecutor, ITransactionExecutor {
 
@@ -18,7 +19,7 @@ public class UpdateQueryExecutor implements IQueryExecutor, ITransactionExecutor
     private String whereValue;
     private String operator;
     private UpdateQuery updateQuery;
-    private ArrayList<HashMap<String, String>> tableData;
+    private ArrayList<LinkedHashMap<String, String>> tableData;
 
     public UpdateQueryExecutor(UpdateQuery updateQuery) {
         this.updateQuery = updateQuery;
