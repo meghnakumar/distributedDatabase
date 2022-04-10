@@ -35,7 +35,7 @@ public class QueryExecutor {
             IQueryExecutor queryExecutor = null;
             QueryParser parser = new QueryParser();
             Query query = parser.parse(sqlQuery);
-            parser.validateQuery(query,null);
+            //parser.validateQuery(query,null);
             switch (query.getQueryType()) {
                 case CREATE_DATABASE:
                     CreatDatabaseQuery creatDatabaseQuery = (CreatDatabaseQuery) query;
