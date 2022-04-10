@@ -71,7 +71,7 @@ public class CreateDatabaseExecutor implements IQueryExecutor
         StringBuilder result = new StringBuilder();
         try
         {
-            if(QueryExecutorUtil.isDatabaseExists(databaseName))
+            if(QueryExecutorUtil.isDatabaseExistsInLocal(databaseName))
             {
                 result.append("Database already exists");
                 System.err.println("Database already exists");

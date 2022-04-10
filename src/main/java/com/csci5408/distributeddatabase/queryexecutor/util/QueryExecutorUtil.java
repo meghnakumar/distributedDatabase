@@ -1,5 +1,6 @@
 package com.csci5408.distributeddatabase.queryexecutor.util;
 
+import com.csci5408.distributeddatabase.globalmetadatahandler.GlobalMetadataHandler;
 import com.csci5408.distributeddatabase.util.FileUtil;
 import com.csci5408.distributeddatabase.query.Criteria;
 import com.csci5408.distributeddatabase.queryexecutor.constants.QueryConstants;
@@ -11,7 +12,16 @@ import java.util.Set;
 
 public class QueryExecutorUtil
 {
-    public static boolean isDatabaseExists(String databaseName)
+
+    public static boolean isDataBaseExists(String databaseName)
+    {
+        GlobalMetadataHandler metadataHandler = new GlobalMetadataHandler();
+        Properties globalProps = metadataHandler.getGlobalMetadataProperties();
+        System.out.println("checking if "+databaseName+ " exists result = " +globalProps.containsKey(databaseName));
+        return globalProps.containsKey(databaseName);
+    }
+
+    public static boolean isDatabaseExistsInLocal(String databaseName)
     {
         return FileUtil.isDirectoryExists(databaseName);
     }

@@ -13,7 +13,7 @@ public class UseDatabaseQueryValidator implements Validator {
         }
 
         UseDatabaseQuery dbQuery = (UseDatabaseQuery) query;
-        if (!QueryExecutorUtil.isDatabaseExists(dbQuery.getDatabaseName())) {
+        if (!QueryExecutorUtil.isDataBaseExists(dbQuery.getDatabaseName())) {
             throw new IllegalArgumentException("OOPS!! Database doesn't exist");
         }
     }

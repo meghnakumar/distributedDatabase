@@ -12,7 +12,7 @@ public class CreateDatabaseQueryValidator implements Validator {
             throw new IllegalArgumentException("Cannot use create database inside transaction query");
         }
         CreatDatabaseQuery dbQuery = (CreatDatabaseQuery) query;
-        if (QueryExecutorUtil.isDatabaseExists(dbQuery.getDatabaseName())) {
+        if (QueryExecutorUtil.isDatabaseExistsInLocal(dbQuery.getDatabaseName())) {
             throw new IllegalArgumentException("OOPS!! Database already exists");
         }
     }
