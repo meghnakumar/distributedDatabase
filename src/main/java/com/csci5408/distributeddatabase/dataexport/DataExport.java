@@ -55,15 +55,15 @@ public class DataExport {
                     String referenceTableField = tableContent.get("referenceTableField");
                     String tableColumn = tableContent.get("tableColumn");
 
-                    if(tableColumn != null) {
+                    if(!tableColumn.isEmpty()) {
                         createTableQuery += tableColumn;
                     }
 
-                    if(primaryKey != null) {
+                    if(!primaryKey.isEmpty()) {
                         createTableQuery += "primary key (" + primaryKey + ") ";
                     }
 
-                    if(foreignKey != null && referenceTable != null && referenceTableField != null) {
+                    if(!(foreignKey.isEmpty() && referenceTable.isEmpty() && referenceTableField.isEmpty())) {
                         createTableQuery += ", foreign key (" +  foreignKey + ") references " +
                                 referenceTable + "(" + referenceTableField + "));";
                         System.out.println();

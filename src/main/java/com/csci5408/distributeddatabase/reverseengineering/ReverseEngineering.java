@@ -55,7 +55,7 @@ public class ReverseEngineering {
 
                 String cardinality = "";
                 File tableData = new File(databaseName+"/"+tableName+".txt");
-                if(foreignKey != null && tableData.exists()) {
+                if(!foreignKey.isEmpty() && tableData.exists()) {
                     BufferedReader bufferedReader = new BufferedReader(new FileReader(tableData));
                     String line = "";
                     int fkPosition = 0;
@@ -106,11 +106,11 @@ public class ReverseEngineering {
         String relationString = "";
         String relationWithCardinality = " * ----------------> " + cardinality + " ";
 
-        if(primaryKey != null) {
+        if(!primaryKey.isEmpty()) {
             relationString += "(Primary_Key: " + primaryKey;
         }
 
-        if(foreignKey != null && foreignKeyTableName != null && primaryKeyOfForeignKeyTable != null) {
+        if(!(foreignKey.isEmpty() && foreignKeyTableName.isEmpty() && primaryKeyOfForeignKeyTable.isEmpty())) {
             relationString += ", Foreign_Key: " + foreignKey + "))" + relationWithCardinality + foreignKeyTableName + "(" + primaryKeyOfForeignKeyTable + ")";
         } else {
             relationString += "))";
