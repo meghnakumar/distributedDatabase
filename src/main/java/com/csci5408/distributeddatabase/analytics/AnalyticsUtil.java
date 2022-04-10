@@ -49,6 +49,8 @@ public class AnalyticsUtil
 
     private boolean addAnalyticsForUserType(Query query)
     {
+        System.err.println(System.getProperties());
+        System.err.println("adding user logs for query "+query+" lis logged in user contains? "+System.getProperties().containsKey(UserAnalyticsConstants.LOGGED_IN_USER_NAME));
         if(System.getProperties().containsKey(UserAnalyticsConstants.LOGGED_IN_USER_NAME))
         {
             try

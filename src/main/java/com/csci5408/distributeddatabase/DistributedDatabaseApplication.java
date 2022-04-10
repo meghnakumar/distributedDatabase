@@ -22,7 +22,7 @@ public class DistributedDatabaseApplication {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("========================================");
 		System.out.println("DPG23 Distributed database");
-		boolean isLogged = true;
+		boolean isLogged = false;
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(System.in));
 		while (true) {
