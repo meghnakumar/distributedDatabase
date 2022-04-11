@@ -21,6 +21,8 @@ public class UseDatabaseQueryExecutor implements IQueryExecutor
     {
         DistributedHelper distributedHelper = new DistributedHelper();
         isPresentLocal = distributedHelper.isDatabasePresentInLocalInstance(useDatabaseQuery.getDatabaseName());
+        System.err.println("Present in Local:::::::::"+isPresentLocal);
+        System.err.println("Present in Other:::::::::"+isPresentOther);
         isPresentOther = distributedHelper.isDatabasePresentInOtherInstance(useDatabaseQuery.getDatabaseName());
         if(isPresentLocal || isPresentOther){
             System.setProperty(QueryConstants.PROPERTY_CURRENT_DATABASE, useDatabaseQuery.getDatabaseName());
