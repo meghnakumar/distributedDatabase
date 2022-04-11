@@ -8,6 +8,8 @@ import com.csci5408.distributeddatabase.user.Logger;
 public class UseDatabaseQueryExecutor implements IQueryExecutor
 {
     private UseDatabaseQuery useDatabaseQuery;
+    private boolean isPresentLocal = false;
+    private boolean isPresentOther = false;
 
     public UseDatabaseQueryExecutor(UseDatabaseQuery useDatabaseQuery)
     {
@@ -17,13 +19,20 @@ public class UseDatabaseQueryExecutor implements IQueryExecutor
     @Override
     public String execute() throws Exception
     {
-        System.setProperty(QueryConstants.PROPERTY_CURRENT_DATABASE, useDatabaseQuery.getDatabaseName());
-        System.out.println(System.getProperties());
-
         DistributedHelper distributedHelper = new DistributedHelper();
-        distributedHelper.updateSystemProperties(QueryConstants.PROPERTY_CURRENT_DATABASE,  useDatabaseQuery.getDatabaseName());
+        isPresentLocal = distributedHelper.isDatabasePresentInLocalInstance(useDatabaseQuery.getDatabaseName());
+        isPresentOther = distributedHelper.isDatabasePresentInOtherInstance(useDatabaseQuery.getDatabaseName());
+        if(isPresentLocal || isPresentOther){
+            System.setProperty(QueryConstants.PROPERTY_CURRENT_DATABASE, useDatabaseQuery.getDatabaseName());
+            System.out.println(System.getProperties());
 
-        Logger.queryLogger("::::::::::::::::USE_DATABASE query executed::::::::::::::::::::");
-        return System.getProperties().getProperty(QueryConstants.PROPERTY_CURRENT_DATABASE);
+            distributedHelper.updateSystemProperties(QueryConstants.PROPERTY_CURRENT_DATABASE,  useDatabaseQuery.getDatabaseName());
+
+            Logger.queryLogger("::::::::::::::::USE_DATABASE query executed::::::::::::::::::::");
+            return System.getProperties().getProperty(QueryConstants.PROPERTY_CURRENT_DATABASE);
+        }
+        else
+            return "Database not found";
+
     }
 }
